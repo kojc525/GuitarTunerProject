@@ -1,4 +1,5 @@
 import tkinter as tk
+import sounddevice as sd
 
 
 # Global variables
@@ -7,12 +8,12 @@ tunings = {
     "Standard": {"E2": 82.41, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
     "Drop D": {"D2": 73.42, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63}
 }
-input_devices = ["Device 1", "Device 2", "Device 3"]
+input_devices = ["Device1"]
 target_frequency = {'note': '', 'frequency': 0}
 input_frequency = 100  # Hz for testing
 
 
-# Functions
+# Functions GUI
 # -------------------------------------------------------------------
 # Function to update string buttons based on selected tuning
 def update_string_buttons(tuning):
@@ -32,6 +33,19 @@ def string_button_click(index, note, freq):
     string_buttons[index].config(bg="green")
     # Use ':.2f' to format the frequency to two decimal places
     target_note_label.config(text=f"{note} - {freq:.2f} Hz")
+
+
+# Functions INPUT
+# -------------------------------------------------------------------
+def get_input_devices():
+    global input_devices
+    devices = sd.query_devices()
+    input_devices = [device['name'] for device in devices if device['max_input_channels'] > 0]
+
+
+# MAIN
+# -------------------------------------------------------------------
+get_input_devices()
 
 
 # GUI
