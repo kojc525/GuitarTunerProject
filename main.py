@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 import sounddevice as sd
 
 
@@ -20,7 +21,6 @@ def update_string_buttons(tuning):
     notes = tunings[tuning]
     for i, (note, freq) in enumerate(notes.items()):
         string_buttons[i].config(text=note, command=lambda i=i, note=note, freq=freq: string_button_click(i, note, freq))
-
 
 
 # Function to handle string button click
@@ -63,16 +63,17 @@ root.grid_columnconfigure(2, weight=1)
 # Tuning selection
 tk.Label(root, text="Tuning:").grid(row=0, column=0, sticky="w")
 tuning_var = tk.StringVar(root)
-tuning_var.set(list(tunings.keys())[0])
-tuning_menu = tk.OptionMenu(root, tuning_var, *tunings.keys(), command=update_string_buttons)
-tuning_menu.grid(row=0, column=1, columnspan=2, sticky="ew")
+tuning_combobox = ttk.Combobox(root, textvariable=tuning_var, values=list(tunings.keys()), state="readonly")
+tuning_combobox.grid(row=0, column=1, columnspan=2, sticky="ew", padx=[0,15], pady=5)
+tuning_combobox.current(0)  # Set the default selection to the first tuning in the list
+tuning_combobox.bind('<<ComboboxSelected>>', lambda event: update_string_buttons(tuning_var.get()))  # Update buttons on selection
 
 # Input device selection
 tk.Label(root, text="Input device:").grid(row=1, column=0, sticky="w")
 input_device_var = tk.StringVar(root)
-input_device_var.set(input_devices[0])
-input_device_menu = tk.OptionMenu(root, input_device_var, *input_devices)
-input_device_menu.grid(row=1, column=1, columnspan=2, sticky="ew")
+input_device_combobox = ttk.Combobox(root, textvariable=input_device_var, values=input_devices, state="readonly")
+input_device_combobox.grid(row=1, column=1, columnspan=2, sticky="ew", padx=[0,15], pady=5)
+input_device_combobox.current(0)  # Set the default selection to the first input device in the list
 
 # String buttons
 tk.Label(root, text="Choose string:").grid(row=2, column=0, sticky="w")
@@ -80,7 +81,7 @@ string_buttons = []
 for i, (note, freq) in enumerate(tunings[tuning_var.get()].items()):
     btn = tk.Button(root, text=note, padx=5, pady=5,
                     command=lambda i=i, note=note, freq=freq: string_button_click(i, note, freq))
-    btn.grid(row=3 + i, column=1, sticky="ew", padx=5)
+    btn.grid(row=3 + i, column=1, sticky="ew", padx=[0,5])
     string_buttons.append(btn)
 
 # Target note
