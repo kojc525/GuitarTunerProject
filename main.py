@@ -20,6 +20,9 @@ tunings = {
 # Duration for each audio capture cycle in seconds.
 detection_speed = 0.5
 
+# Frequency indicator
+turn_indicator_green = 3  # Turns indicator green when input_frequency is within this much of target_frequency
+turn_indicator_red = 50   # Turns indicator red when input_frequency is this far from target_frequency
 
 # Global variables - DON'T modify
 # -------------------------------------------------------------------
@@ -125,6 +128,23 @@ def start_frequency_detection():
             # Update the GUI with the detected frequency, unless detection has been stopped.
             if continue_detection:
                 input_sound_label.config(text=f"{dominant_frequency:.2f} Hz")
+                # Compare input frequency with target frequency and update the indicator
+                frequency_difference = abs(target_frequency['frequency'] - dominant_frequency)
+                # Check if the dominant frequency is within [turn_indicator_green] Hz of the target frequency
+                if frequency_difference < turn_indicator_green:
+                    tuning_indicator_label.config(text="[  >> | << ]", fg='green')
+                elif frequency_difference > turn_indicator_red:
+                    # If the difference is greater than [turn_indicator_red] Hz, display the indicator in red
+                    if target_frequency['frequency'] > dominant_frequency:
+                        tuning_indicator_label.config(text="[ >> |     ]", fg='red')
+                    else:
+                        tuning_indicator_label.config(text="[     | << ]", fg='red')
+                else:
+                    # For differences between 3 Hz and 50 Hz, display the indicator in black
+                    if target_frequency['frequency'] > dominant_frequency:
+                        tuning_indicator_label.config(text="[  > |     ]", fg='black')
+                    else:
+                        tuning_indicator_label.config(text="[     | <  ]", fg='black')
             else:
                 break  # Exit the loop if detection is stopped.
 
@@ -147,6 +167,8 @@ def stop_frequency_detection():
     input_sound_label.config(text="0 Hz")
     detect_freq_button.config(bg='SystemButtonFace', activebackground='SystemButtonFace')  # Start button default
     stop_freq_button.config(bg='red', activebackground='red')  # Stop button red
+
+    tuning_indicator_label.config(text="[     |     ]", fg='black')  # Stop showing tuning label
 
 
 # Function to handle the window closing event
@@ -177,7 +199,7 @@ get_input_devices()
 # Create the main application window
 root = tk.Tk()
 root.title("Guitar Tuner")  # Set the title of the window
-root.geometry('420x400')  # Set the fixed size of the window
+root.geometry('420x420')  # Set the fixed size of the window
 root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the closing protocol to the on_closing function
 
 
@@ -224,19 +246,23 @@ tk.Label(root, text="Input sound:").grid(row=10, column=0, sticky="w", padx=10)
 input_sound_label = tk.Label(root, text=f"{input_frequency} Hz")
 input_sound_label.grid(row=10, column=1, sticky="w")
 
+# Tuning Indicator Label
+tuning_indicator_label = tk.Label(root, text="[     |     ]", font=("Courier", 12))
+tuning_indicator_label.grid(row=11, column=1, sticky="ew")
+
 
 # Create and place labels and buttons for starting and stopping frequency detection
 detect_freq_label = tk.Label(root, text=f"Start tuning:", padx=10)
-detect_freq_label.grid(row=11, column=0, sticky="w")
+detect_freq_label.grid(row=12, column=0, sticky="w")
 detect_freq_button = tk.Button(root, text="Start", command=start_frequency_detection)  # Button to start detection
-detect_freq_button.grid(row=11, column=1, padx=10, pady=5, sticky="ew")
+detect_freq_button.grid(row=12, column=1, padx=10, pady=5, sticky="ew")
 stop_freq_button = tk.Button(root, text="Stop", command=stop_frequency_detection)  # Button to stop detection
-stop_freq_button.grid(row=11, column=2, padx=10, pady=5, sticky="ew")
+stop_freq_button.grid(row=12, column=2, padx=10, pady=5, sticky="ew")
 
 
 # Create and place a signature label
 signiture_label = tk.Label(root, text=f"by Kojc")
-signiture_label.grid(row=12, column=2, sticky="e", padx=[0,15])
+signiture_label.grid(row=13, column=2, sticky="e", padx=[0,15])
 
 
 # Start the Tkinter main event loop
