@@ -9,9 +9,20 @@ import threading
 # -------------------------------------------------------------------
 # Dictionary containing different guitar tunings with note names and their corresponding frequencies in Hz.
 tunings = {
-    "Standard": {"E2": 82.41, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
-    "Drop D": {"D2": 73.42, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63}
+    "Standard":          {"E2": 82.41, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
+    "Drop D":            {"D2": 73.42, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
+    "E Flat Tuning":     {"Eb2": 77.78, "Ab2": 103.83, "Db3": 138.59, "Gb3": 184.99, "Bb3": 233.08, "Eb4": 311.13},
+    "D Standard Tuning": {"D2": 73.42, "G2": 97.99, "C3": 130.81, "F3": 174.61, "A3": 220.00, "D4": 293.66},
+    "Open G Tuning":     {"D2": 73.42, "G2": 97.99, "D3": 146.83, "G3": 196.00, "B3": 246.94, "D4": 293.66},
+    "Slash Tuning":      {"Eb2": 77.78, "Ab2": 103.83, "Db3": 138.59, "Gb3": 184.99, "Bb3": 233.08, "Eb4": 311.13}
 }
+
+# Duration for each audio capture cycle in seconds.
+detection_speed = 0.5
+
+
+# Global variables - DON'T modify
+# -------------------------------------------------------------------
 # List of available input devices for audio capture.
 input_devices = ["Device1"]
 
@@ -24,9 +35,10 @@ input_frequency = 0
 # Global variable for the thread used in detection; initialized to None.
 detection_thread = None
 
-# Duration for each audio capture cycle in seconds.
-detection_speed = 0.5
-
+# Global variable to control the state of the audio detection process.
+# It is used as a flag to start or stop the continuous detection in a separate thread.
+# When set to True, the detection process runs; when set to False, the detection stops.
+continue_detection = False
 
 
 
@@ -38,8 +50,9 @@ def update_string_buttons(tuning):
     # Iterating over each note in the selected tuning.
     notes = tunings[tuning]
     for i, (note, freq) in enumerate(notes.items()):
-        # Configuring each string button with the note name and setting up its command.
-        string_buttons[i].config(text=note, command=lambda i=i, note=note, freq=freq: string_button_click(i, note, freq))
+        # Configuring each string button with the note name and freq. + setting up its command.
+        button_text = f"{note} - {freq:.2f} Hz"
+        string_buttons[i].config(text=button_text, command=lambda i=i, note=note, freq=freq: string_button_click(i, note, freq))
 
 
 # Handles the event when a string button is clicked.
@@ -98,6 +111,7 @@ def calculate_dominant_frequency(recording, samplerate=44100):
 # Starts the frequency detection process in a separate thread.
 def start_frequency_detection():
     def detect():
+        global continue_detection
         # Continuously detect frequency while the flag is true.
         while continue_detection:
             # Retrieve and set the selected input device.
@@ -163,7 +177,7 @@ get_input_devices()
 # Create the main application window
 root = tk.Tk()
 root.title("Guitar Tuner")  # Set the title of the window
-root.geometry('300x400')  # Set the fixed size of the window
+root.geometry('420x400')  # Set the fixed size of the window
 root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the closing protocol to the on_closing function
 
 
@@ -193,7 +207,8 @@ input_device_combobox.current(0)  # Initialize with the first input device optio
 tk.Label(root, text="Choose string:").grid(row=2, column=0, sticky="w", padx=10)
 string_buttons = []
 for i, (note, freq) in enumerate(tunings[tuning_var.get()].items()):
-    btn = tk.Button(root, text=note, padx=5, pady=5, command=lambda i=i, note=note, freq=freq: string_button_click(i, note, freq))
+    button_text = f"{note} - {freq:.2f} Hz"
+    btn = tk.Button(root, text=button_text, padx=5, pady=5, command=lambda i=i, note=note, freq=freq: string_button_click(i, note, freq))
     btn.grid(row=3 + i, column=1, sticky="ew", padx=[0,5])
     string_buttons.append(btn)  # Add button to the list for later reference
 
