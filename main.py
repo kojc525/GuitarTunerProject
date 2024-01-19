@@ -20,7 +20,7 @@ import requests
 #     "Open G Tuning":     {"D2": 73.42, "G2": 97.99, "D3": 146.83, "G3": 196.00, "B3": 246.94, "D4": 293.66},
 #     "Slash Tuning":      {"Eb2": 77.78, "Ab2": 103.83, "Db3": 138.59, "Gb3": 184.99, "Bb3": 233.08, "Eb4": 311.13}
 # }
-# Server tunings
+# Server tunings - are loded in with the API
 tunings = {}
 
 # Duration for each audio capture cycle in seconds.
@@ -196,12 +196,18 @@ def on_closing():
 # *          MAIN           *
 # ***************************
 # -------------------------------------------------------------------
-# Request to server
+# LOAD TUNINGS FROM SERVER
+# Make an HTTP GET request to the specified URL which is the API endpoint for guitar tunings.
 response = requests.get('http://localhost:5000/api/tunings')
+
+# Check if the HTTP request was successful (status code 200 implies success).
 if response.status_code == 200:
+    # Parse the JSON response from the server into a Python dictionary.
     tunings = response.json()
+    # Print the dictionary containing the tunings to the console.
     print(tunings)
 else:
+    # If the request was not successful, print an error message.
     print("Failed to retrieve tunings")
 
 # Initialize and get the list of input devices.
