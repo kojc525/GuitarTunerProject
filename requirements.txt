@@ -5,3 +5,5 @@ pycparser~=2.21
 sounddevice~=0.4.6
 numpy~=1.26.3
 cffi~=1.16.0
+requests~=2.31.0
+Flask~=3.0.1

@@ -3,6 +3,7 @@ from tkinter import ttk
 import sounddevice as sd
 import numpy as np
 import threading
+import requests
 
 
 # ***************************
@@ -10,14 +11,17 @@ import threading
 # ***************************
 # -------------------------------------------------------------------
 # Dictionary containing different guitar tunings with note names and their corresponding frequencies in Hz.
-tunings = {
-    "Standard":          {"E2": 82.41, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
-    "Drop D":            {"D2": 73.42, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
-    "E Flat Tuning":     {"Eb2": 77.78, "Ab2": 103.83, "Db3": 138.59, "Gb3": 184.99, "Bb3": 233.08, "Eb4": 311.13},
-    "D Standard Tuning": {"D2": 73.42, "G2": 97.99, "C3": 130.81, "F3": 174.61, "A3": 220.00, "D4": 293.66},
-    "Open G Tuning":     {"D2": 73.42, "G2": 97.99, "D3": 146.83, "G3": 196.00, "B3": 246.94, "D4": 293.66},
-    "Slash Tuning":      {"Eb2": 77.78, "Ab2": 103.83, "Db3": 138.59, "Gb3": 184.99, "Bb3": 233.08, "Eb4": 311.13}
-}
+# Local hardcoded tunings
+# tunings = {
+#     "Standard":          {"E2": 82.41, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
+#     "Drop D":            {"D2": 73.42, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
+#     "E Flat Tuning":     {"Eb2": 77.78, "Ab2": 103.83, "Db3": 138.59, "Gb3": 184.99, "Bb3": 233.08, "Eb4": 311.13},
+#     "D Standard Tuning": {"D2": 73.42, "G2": 97.99, "C3": 130.81, "F3": 174.61, "A3": 220.00, "D4": 293.66},
+#     "Open G Tuning":     {"D2": 73.42, "G2": 97.99, "D3": 146.83, "G3": 196.00, "B3": 246.94, "D4": 293.66},
+#     "Slash Tuning":      {"Eb2": 77.78, "Ab2": 103.83, "Db3": 138.59, "Gb3": 184.99, "Bb3": 233.08, "Eb4": 311.13}
+# }
+# Server tunings
+tunings = {}
 
 # Duration for each audio capture cycle in seconds.
 detection_speed = 0.4  # sec
@@ -192,6 +196,14 @@ def on_closing():
 # *          MAIN           *
 # ***************************
 # -------------------------------------------------------------------
+# Request to server
+response = requests.get('http://localhost:5000/api/tunings')
+if response.status_code == 200:
+    tunings = response.json()
+    print(tunings)
+else:
+    print("Failed to retrieve tunings")
+
 # Initialize and get the list of input devices.
 get_input_devices()
 
