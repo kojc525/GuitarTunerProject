@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Tunings</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <h1>Guitar Tunings</h1>
     <ul>
         {% for tuning_name, notes in tunings.items() %}
-        <li>{{ tuning_name }}:
-            <ul>
+        <li class="tuning-name">{{ tuning_name }}:
+            <ul class="notes-list">
                 {% for note, frequency in notes.items() %}
-                <li>{{ note }} - {{ frequency }} Hz</li>
+                <li class="note-frequency">{{ note }} - {{ frequency }} Hz</li>
                 {% endfor %}
             </ul>
         </li>
