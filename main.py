@@ -12,16 +12,10 @@ import requests
 # -------------------------------------------------------------------
 # Dictionary containing different guitar tunings with note names and their corresponding frequencies in Hz.
 # Local hardcoded tunings
-# tunings = {
-#     "Standard":          {"E2": 82.41, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
-#     "Drop D":            {"D2": 73.42, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
-#     "E Flat Tuning":     {"Eb2": 77.78, "Ab2": 103.83, "Db3": 138.59, "Gb3": 184.99, "Bb3": 233.08, "Eb4": 311.13},
-#     "D Standard Tuning": {"D2": 73.42, "G2": 97.99, "C3": 130.81, "F3": 174.61, "A3": 220.00, "D4": 293.66},
-#     "Open G Tuning":     {"D2": 73.42, "G2": 97.99, "D3": 146.83, "G3": 196.00, "B3": 246.94, "D4": 293.66},
-#     "Slash Tuning":      {"Eb2": 77.78, "Ab2": 103.83, "Db3": 138.59, "Gb3": 184.99, "Bb3": 233.08, "Eb4": 311.13}
-# }
-# Server tunings - are loded in with the API
-tunings = {}
+local_tunings = {
+    "Standard":          {"E2": 82.41, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
+    "Drop D":            {"D2": 73.42, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
+}
 
 # Duration for each audio capture cycle in seconds.
 detection_speed = 0.4  # sec
@@ -32,6 +26,12 @@ turn_indicator_red = 50   # Hz - Turns indicator red when input_frequency is thi
 
 # Global variables - DON'T modify
 # -------------------------------------------------------------------
+# Server tunings - are loded in with the API
+server_tunings = {}
+
+# Tunings currently used by the app
+tunings = {}
+
 # List of available input devices for audio capture.
 input_devices = ["Device1"]
 
@@ -203,10 +203,16 @@ try:
 
     # Check if the HTTP request was successful (status code 200 implies success).
     if response.status_code == 200:
+        print("-"*22 + "\nConnected to server!\n" + "-"*22)
         # Parse the JSON response from the server into a Python dictionary.
-        tunings = response.json()
-        # Print the dictionary containing the tunings to the console.
-        print(tunings)
+        server_tunings = response.json()
+        # Use server tunings in the app
+        tunings = server_tunings
+
+        # Print imported tunings to the console.
+        print("Tunings imported:")
+        for tuning, notes in tunings.items():
+            print(f"   {tuning:20} = {notes}")
 
 
         # Initialize and get the list of input devices.
