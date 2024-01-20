@@ -8,14 +8,22 @@
 <body>
     <h1>Guitar Tunings</h1>
     <ul>
-        {% for tuning_name, notes in tunings.items() %}
-        <li class="tuning-name">{{ tuning_name }}:
-            <ul class="notes-list">
-                {% for note, frequency in notes.items() %}
-                <li class="note-frequency">{{ note }} - {{ frequency }} Hz</li>
-                {% endfor %}
-            </ul>
-        </li>
+        <!-- Iterate over the list of tunings -->
+        {% for tuning_dict in tunings %}
+            <!-- Each tuning_dict is a dictionary with one key-value pair -->
+            {% for tuning_name, notes in tuning_dict.items() %}
+            <li class="tuning-name">{{ tuning_name }}:
+                <ul class="notes-list">
+                    <!-- notes is a list of dictionaries; iterate over it -->
+                    {% for note_dict in notes %}
+                        <!-- Each note_dict is a dictionary with one key-value pair -->
+                        {% for note, frequency in note_dict.items() %}
+                        <li class="note-frequency">{{ note }} - {{ frequency }} Hz</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endfor %}
         {% endfor %}
     </ul>
 </body>

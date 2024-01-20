@@ -6,25 +6,30 @@ import threading
 import requests
 
 
+
 # ***************************
 # *    Global variables     *
 # ***************************
+# Global variables - app settings
 # -------------------------------------------------------------------
 # Dictionary containing different guitar tunings with note names and their corresponding frequencies in Hz.
 # Local hardcoded tunings
-local_tunings = {
-    "Standard":          {"E2": 82.41, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
-    "Drop D":            {"D2": 73.42, "A2": 110.00, "D3": 146.83, "G3": 196.00, "B3": 246.94, "E4": 329.63},
-}
+local_tunings = [
+    {"Standard":    [{"E2": 82.41}, {"A2": 110.00}, {"D3": 146.83}, {"G3": 196.00}, {"B3": 246.94}, {"E4": 329.63}]},
+    {"Drop D":      [{"D2": 73.42}, {"A2": 110.00}, {"D3": 146.83}, {"G3": 196.00}, {"B3": 246.94}, {"E4": 329.63}]}
+]
 
 # Duration for each audio capture cycle in seconds.
+# Lower = faster app but less precise
+# Higher = slower app but more precise
 detection_speed = 0.4  # sec
 
 # Frequency indicator
 turn_indicator_green = 2  # Hz - Turns indicator green when input_frequency is within this much of target_frequency
 turn_indicator_red = 50   # Hz - Turns indicator red when input_frequency is this far from target_frequency
 
-# Global variables - DON'T modify
+
+# Other global variables - DO NOT MODIFY
 # -------------------------------------------------------------------
 # Server tunings - are loded in with the API
 server_tunings = {}
@@ -50,32 +55,53 @@ detection_thread = None
 continue_detection = False
 
 
+
 # ***************************
 # *        Functions        *
 # ***************************
 # GUI Functions
 # -------------------------------------------------------------------
 # Updates the text on string buttons based on the selected tuning.
-def update_string_buttons(tuning):
-    # Iterating over each note in the selected tuning.
-    notes = tunings[tuning]
-    for i, (note, freq) in enumerate(notes.items()):
-        # Configuring each string button with the note name and freq. + setting up its command.
-        button_text = f"{note} - {freq:.2f} Hz"
-        string_buttons[i].config(text=button_text, command=lambda i=i, note=note, freq=freq: string_button_click(i, note, freq))
+def update_string_buttons(tuning_name):
+    # Find the dictionary for the given tuning name.
+    tuning_dict = next((item for item in tunings if tuning_name in item), None)
+    if tuning_dict:
+        # Clear the previous buttons
+        for btn in string_buttons:
+            btn.grid_forget()
+        string_buttons.clear()
+
+        # Reset the target note display
+        global target_frequency
+        target_frequency = {'note': 'Note', 'frequency': 0.00}
+        target_note_label.config(text=f"{target_frequency['note']} - {target_frequency['frequency']:.2f} Hz")
+
+        notes_list = tuning_dict[tuning_name]
+        # Create new buttons for the selected tuning
+        for i, note_dict in enumerate(notes_list):
+            for note, freq in note_dict.items():
+                button_text = f"{note} - {freq:.2f} Hz"
+                # Create a new button with the note and frequency
+                btn = tk.Button(root, text=button_text, padx=5, pady=5,
+                                command=lambda note=note, freq=freq: string_button_click(note, freq))
+                btn.grid(row=3 + i, column=1, sticky="ew", padx=[0,5])
+                string_buttons.append(btn)
 
 
 # Handles the event when a string button is clicked.
-def string_button_click(index, note, freq):
+def string_button_click(note, freq):
     # Updating the target frequency based on the selected string.
     global target_frequency
     target_frequency['note'] = note
     target_frequency['frequency'] = freq
 
     # Resetting the background color of all buttons and setting the clicked button to green.
+    # We must find the button associated with the note
     for button in string_buttons:
-        button.config(bg="SystemButtonFace")
-    string_buttons[index].config(bg="green")
+        if button['text'].startswith(note):  # Check if the button's text starts with the note name
+            button.config(bg="green")
+        else:
+            button.config(bg="SystemButtonFace")
 
     # Updating the target note label with the note name and frequency, formatted to two decimal places.
     target_note_label.config(text=f"{note} - {freq:.2f} Hz")
@@ -192,6 +218,7 @@ def on_closing():
     root.destroy()
 
 
+
 # ***************************
 # *          MAIN           *
 # ***************************
@@ -211,8 +238,9 @@ try:
 
         # Print imported tunings to the console.
         print("Tunings imported:")
-        for tuning, notes in tunings.items():
-            print(f"   {tuning:20} = {notes}")
+        for tuning_dict in tunings:
+            for tuning_name, notes_list in tuning_dict.items():
+                print(f"{tuning_name:22}:", notes_list)
 
 
         # Initialize and get the list of input devices.
@@ -227,20 +255,26 @@ try:
         root.geometry('420x420')  # Set the fixed size of the window
         root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the closing protocol to the on_closing function
 
-
         # Configure the grid layout of the root window
         root.grid_columnconfigure(1, weight=1)
         root.grid_columnconfigure(2, weight=1)
 
 
+        # ----- TUNING SELECTION -----
         # Create and place the tuning selection label and combobox
         tk.Label(root, text="Tuning:").grid(row=0, column=0, sticky="w", padx=10)
         tuning_var = tk.StringVar(root)
-        tuning_combobox = ttk.Combobox(root, textvariable=tuning_var, values=list(tunings.keys()), state="readonly")
-        tuning_combobox.grid(row=0, column=1, columnspan=2, sticky="ew", padx=[0,15], pady=5)
+        # Extract tuning names from the tunings list
+        tuning_names = [list(tuning.keys())[0] for tuning in tunings]
+        # Setup the combobox with the extracted tuning names
+        tuning_combobox = ttk.Combobox(root, textvariable=tuning_var, values=tuning_names, state="readonly")
+        tuning_combobox.grid(row=0, column=1, columnspan=2, sticky="ew", padx=[0, 15], pady=5)
         tuning_combobox.current(0)  # Initialize with the first tuning option selected
-        tuning_combobox.bind('<<ComboboxSelected>>', lambda event: update_string_buttons(tuning_var.get()))  # Update string buttons when a tuning is selected
+        # When a tuning is selected from the combobox, the update_string_buttons function is called with the selected tuning name.
+        tuning_combobox.bind('<<ComboboxSelected>>', lambda event: update_string_buttons(tuning_var.get()))
 
+
+        # ----- INPUT SELECTION -----
         # Create and place the input device selection label and combobox
         tk.Label(root, text="Input device:").grid(row=1, column=0, sticky="w", padx=10)
         input_device_var = tk.StringVar(root)
@@ -248,29 +282,47 @@ try:
         input_device_combobox.grid(row=1, column=1, columnspan=2, sticky="ew", padx=[0,15], pady=5)
         input_device_combobox.current(0)  # Initialize with the first input device option selected
 
+
+        # ----- GUITAR STRING BUTTONS -----
         # Create and place buttons for each string based on the selected tuning
         tk.Label(root, text="Choose string:").grid(row=2, column=0, sticky="w", padx=10)
         string_buttons = []
-        for i, (note, freq) in enumerate(tunings[tuning_var.get()].items()):
-            button_text = f"{note} - {freq:.2f} Hz"
-            btn = tk.Button(root, text=button_text, padx=5, pady=5, command=lambda i=i, note=note, freq=freq: string_button_click(i, note, freq))
-            btn.grid(row=3 + i, column=1, sticky="ew", padx=[0,5])
-            string_buttons.append(btn)  # Add button to the list for later reference
+        # Since tunings is a list of dictionaries, we extract the first tuning's notes by default.
+        # You may want to do this after a tuning is selected from the combobox instead.
+        selected_tuning_dict = tunings[tuning_combobox.current()]  # get the current selected tuning
+        selected_tuning_name = tuning_var.get()  # get the name of the tuning
+        notes_list = selected_tuning_dict[selected_tuning_name]  # get the list of notes for this tuning
+        # Create buttons for each note in the selected tuning
+        for i, note_dict in enumerate(notes_list):
+            for note, freq in note_dict.items():
+                button_text = f"{note} - {freq:.2f} Hz"
+                btn = tk.Button(root, text=button_text, padx=5, pady=5,
+                                command=lambda note=note, freq=freq: string_button_click(note, freq))
+                btn.grid(row=3 + i, column=1, sticky="ew", padx=[0, 5])
+                string_buttons.append(btn)
 
+
+        # ----- TARGET NOTE TO HIT -----
         # Create and place label for displaying the targeted note
         tk.Label(root, text="Target note:").grid(row=9, column=0, sticky="w", padx=10)
         target_note_label = tk.Label(root, text=f"{target_frequency['note']} - {target_frequency['frequency']:.2f} Hz")
         target_note_label.grid(row=9, column=1, sticky="w")
 
+
+        # ----- DOMINANT INPUT FREQUENCY -----
         # Create and place label for displaying the detected input sound frequency
         tk.Label(root, text="Input sound:").grid(row=10, column=0, sticky="w", padx=10)
         input_sound_label = tk.Label(root, text=f"{input_frequency} Hz")
         input_sound_label.grid(row=10, column=1, sticky="w")
 
+
+        # ----- TUNING INDICATOR -----
         # Tuning Indicator Label
         tuning_indicator_label = tk.Label(root, text="[     |     ]", font=("Courier", 12))
         tuning_indicator_label.grid(row=11, column=1, sticky="ew")
 
+
+        # ----- START / STOP TUNING -----
         # Create and place labels and buttons for starting and stopping frequency detection
         detect_freq_label = tk.Label(root, text=f"Start tuning:", padx=10)
         detect_freq_label.grid(row=12, column=0, sticky="w")
@@ -279,6 +331,8 @@ try:
         stop_freq_button = tk.Button(root, text="Stop", command=stop_frequency_detection)  # Button to stop detection
         stop_freq_button.grid(row=12, column=2, padx=10, pady=5, sticky="ew")
 
+
+        # ----- SIGNITURE -----
         # Create and place a signature label
         signiture_label = tk.Label(root, text=f"by Kojc")
         signiture_label.grid(row=13, column=2, sticky="e", padx=[0,15])
