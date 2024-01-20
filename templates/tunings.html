@@ -10,6 +10,7 @@
     <!-- Add Tuning Button -->
     <button onclick="window.location.href='{{ url_for('add_tuning') }}'" id="add-tuning-button" class="app_button">Add Tuning</button>
 
+    <!-- Display tunings -->
     <ul>
         <!-- Iterating over tunings -->
         {% for tuning_dict in tunings %}

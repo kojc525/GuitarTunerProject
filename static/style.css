@@ -1,67 +1,77 @@
 /* style.css */
 
+/* Global body styles: sets font, removes default margin, and adds top padding */
 body {
     font-family: 'Arial', sans-serif;
-    margin: 0;  /* Set body margin to 0 */
-    padding-top: 20px; /* Add padding at the top of the body */
+    margin: 0;              /* Removes default margin from the body */
+    padding-top: 20px;      /* Adds padding at the top for spacing */
 }
 
+/* Styles for all h1 elements: sets color, alignment, font size, weight, and spacing */
 h1 {
-    color: #051199;
-    text-align: center;
-    font-size: 40px;
-    font-weight: bold;
-    margin: 0; /* Set h1 margin to 0 */
-    padding-bottom: 20px; /* Add padding below the h1 */
+    color: #051199;         /* Sets the color of h1 text */
+    text-align: center;     /* Centers h1 text horizontally */
+    font-size: 40px;        /* Sets the font size */
+    font-weight: bold;      /* Makes the font bold */
+    margin: 0;              /* Removes default margin */
+    padding-bottom: 20px;   /* Adds padding below the h1 for spacing */
 }
 
+/* Styles for unordered lists: removes bullet points and padding */
 ul {
-    list-style-type: none;
-    padding: 0;
+    list-style-type: none;  /* Removes bullet points from lists */
+    padding: 0;             /* Removes default padding */
 }
 
+/* Styles for list items representing tuning names */
 li.tuning-name {
-    color: #051199;
-    margin-top: 20px;
-    font-size: 20px;
-    font-weight: bold;
+    color: #051199;         /* Sets text color */
+    margin-top: 20px;       /* Adds spacing above each tuning name */
+    font-size: 20px;        /* Sets the font size */
+    font-weight: bold;      /* Makes the font bold */
 }
 
+/* Styles for list items representing note frequencies */
 li.note-frequency {
-    color: black;
-    font-size: 15px;
-    font-weight: normal;
+    color: black;           /* Sets text color to black */
+    font-size: 15px;        /* Sets the font size */
+    font-weight: normal;    /* Sets normal font weight */
 }
 
+/* Styles for inner unordered lists showing notes */
 ul.notes-list {
-    list-style-type: disc;
-    padding-left: 20px; /* Adjust padding for disc */
+    list-style-type: disc;  /* Adds bullet points back for inner lists */
+    padding-left: 20px;     /* Adds padding to align bullets properly */
 }
 
+/* General button styling used across the app */
 .app_button {
-    background-color: #051199;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    display: inline-block;
-    cursor: pointer;
-    display: inline-block; /* Display buttons inline */
-    margin: 10px; /* Add some space around each button */
+    background-color: #051199;  /* Sets button background color */
+    color: white;               /* Sets text color to white */
+    padding: 10px 20px;         /* Adds padding inside the button */
+    text-decoration: none;      /* Removes any text decoration */
+    display: inline-block;      /* Aligns buttons in a line */
+    cursor: pointer;            /* Changes cursor to pointer on hover */
+    margin: 10px;               /* Adds margin around each button */
 }
 
+/* Button hover effect */
 .app_button:hover {
-    background-color: #0e58ad;
+    background-color: #0e58ad;  /* Changes background color on hover */
 }
 
+/* Styling specifically for the 'Add Tuning' button */
 #add-tuning-button {
-    display: block; /* Changed to block for centering */
-    margin: 20px auto; /* Center the button horizontally */
+    display: block;         /* Makes the button block level for centering */
+    margin: 20px auto;      /* Centers the button horizontally */
 }
 
+/* Container for buttons: centers its content */
 #button-container {
-    text-align: center; /* Center the container's content */
+    text-align: center;     /* Aligns child elements to the center */
 }
 
+/* Container for tuning input fields: centers its content */
 #add_tuning_inputs {
-    text-align: center; /* Center the container's content */
+    text-align: center;     /* Aligns child elements to the center */
 }

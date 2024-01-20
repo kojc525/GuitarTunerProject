@@ -13,12 +13,59 @@
 </head>
 <body>
     <h1>Add New Tuning</h1>
+
+    <!-- Add new tuning inputs -->
     <div id="add_tuning_inputs">
         <label for="tuningName">Tuning Name:</label>
         <input type="text" id="tuningName" name="tuningName" required>
+
+        <!-- Input fields for each string -->
+        <div class="string-input" id="string1">
+            <label>String 1 = Note:</label>
+            <input type="text" name="note1" required>
+            <label> - Frequency:</label>
+            <input type="range" name="frequency1" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output> Hz
+        </div>
+        <div class="string-input" id="string2">
+            <label>String 2 = Note:</label>
+            <input type="text" name="note2" required>
+            <label> - Frequency:</label>
+            <input type="range" name="frequency2" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output> Hz
+        </div>
+        <div class="string-input" id="string3">
+            <label>String 3 = Note:</label>
+            <input type="text" name="note3" required>
+            <label> - Frequency:</label>
+            <input type="range" name="frequency3" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output> Hz
+        </div>
+                <!-- Input fields for each string -->
+        <div class="string-input" id="string4">
+            <label>String 4 = Note:</label>
+            <input type="text" name="note1" required>
+            <label> - Frequency:</label>
+            <input type="range" name="frequency4" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output> Hz
+        </div>
+        <div class="string-input" id="string5">
+            <label>String 5 = Note:</label>
+            <input type="text" name="note2" required>
+            <label> - Frequency:</label>
+            <input type="range" name="frequency5" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output> Hz
+        </div>
+        <div class="string-input" id="string6">
+            <label>String 6 = Note:</label>
+            <input type="text" name="note3" required>
+            <label> - Frequency:</label>
+            <input type="range" name="frequency7" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
+            <output>0</output> Hz
+        </div>
     </div>
 
-    <!-- Add inputs for notes and frequencies -->
+    <!-- Buttons -->
     <div id="button-container">
         <button onclick="saveTuning()" class="app_button" id="save_tuning_button">Save</button>
         <button onclick="window.location.href='{{ url_for('home') }}'" class="app_button" id="back_button">Back</button>

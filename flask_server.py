@@ -34,7 +34,6 @@ tunings_file = 'tunings.csv'
 # This function checks if a CSV file exists. If it doesn't,
 # it creates the file using 'first_load_tunings'.
 # If the file exists, it loads the tunings from the file into the 'tunings' list.
-
 def load_tunings_from_csv():
     # Loads tunings from a CSV file into the global 'tunings' list.
     global tunings_file, first_load_tunings, tunings

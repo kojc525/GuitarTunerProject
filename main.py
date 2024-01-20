@@ -20,6 +20,9 @@ local_tunings = [
     {"Drop D":      [{"D2": 73.42}, {"A2": 110.00}, {"D3": 146.83}, {"G3": 196.00}, {"B3": 246.94}, {"E4": 329.63}]}
 ]
 
+# Server URL link where the app gets tunings (API)
+server_link = 'http://localhost:5000/api/tunings'
+
 # Duration for each audio capture cycle in seconds.
 # Lower = faster app but less precise
 # Higher = slower app but more precise
@@ -70,10 +73,10 @@ tunings_list_source = None  # Default to 'Local'
 # -------------------------------------------------------------------
 # Function to Load Tunings from Server
 def load_server_tunings():
-    global server_tunings, tunings
+    global server_tunings, tunings, server_link
     try:
         # Make an HTTP GET request to the specified URL which is the API endpoint for guitar tunings.
-        response = requests.get('http://localhost:5000/api/tunings')
+        response = requests.get(server_link)
         if response.status_code == 200:
             print("-" * 22 + "\nConnected to server!\n" + "-" * 22)
             # Parse the JSON response from the server into a Python dictionary.
