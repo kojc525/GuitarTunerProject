@@ -85,6 +85,10 @@ def home():
     # Route to render an HTML page that lists the current tunings.
     return render_template('tunings.html', tunings=tunings)
 
+@app.route('/add_tuning')
+def add_tuning():
+    return render_template('addTuning.html')
+
 @app.route('/api/tunings', methods=['GET'])
 def get_tunings():
     # API route to return the current tunings in JSON format.

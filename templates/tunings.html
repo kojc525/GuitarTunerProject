@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,16 +6,18 @@
 </head>
 <body>
     <h1>Guitar Tunings</h1>
+
+    <!-- Add Tuning Button -->
+    <button onclick="window.location.href='{{ url_for('add_tuning') }}'" id="add-tuning-button" class="app_button">Add Tuning</button>
+
     <ul>
-        <!-- Iterate over the list of tunings -->
+        <!-- Iterating over tunings -->
         {% for tuning_dict in tunings %}
-            <!-- Each tuning_dict is a dictionary with one key-value pair -->
             {% for tuning_name, notes in tuning_dict.items() %}
             <li class="tuning-name">{{ tuning_name }}:
                 <ul class="notes-list">
-                    <!-- notes is a list of dictionaries; iterate over it -->
+                    <!-- Iterating over notes -->
                     {% for note_dict in notes %}
-                        <!-- Each note_dict is a dictionary with one key-value pair -->
                         {% for note, frequency in note_dict.items() %}
                         <li class="note-frequency">{{ note }} - {{ frequency }} Hz</li>
                         {% endfor %}

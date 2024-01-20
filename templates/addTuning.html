@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Tuning</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function saveTuning() {
+            // JavaScript to handle saving the tuning
+            // This will need to be implemented based on how you want to handle the data
+        }
+    </script>
+</head>
+<body>
+    <h1>Add New Tuning</h1>
+    <div id="add_tuning_inputs">
+        <label for="tuningName">Tuning Name:</label>
+        <input type="text" id="tuningName" name="tuningName" required>
+    </div>
+
+    <!-- Add inputs for notes and frequencies -->
+    <div id="button-container">
+        <button onclick="saveTuning()" class="app_button" id="save_tuning_button">Save</button>
+        <button onclick="window.location.href='{{ url_for('home') }}'" class="app_button" id="back_button">Back</button>
+    </div>
+</body>
+</html>
