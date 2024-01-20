@@ -197,87 +197,95 @@ def on_closing():
 # ***************************
 # -------------------------------------------------------------------
 # LOAD TUNINGS FROM SERVER
-# Make an HTTP GET request to the specified URL which is the API endpoint for guitar tunings.
-response = requests.get('http://localhost:5000/api/tunings')
+try:
+    # Make an HTTP GET request to the specified URL which is the API endpoint for guitar tunings.
+    response = requests.get('http://localhost:5000/api/tunings')
 
-# Check if the HTTP request was successful (status code 200 implies success).
-if response.status_code == 200:
-    # Parse the JSON response from the server into a Python dictionary.
-    tunings = response.json()
-    # Print the dictionary containing the tunings to the console.
-    print(tunings)
-else:
-    # If the request was not successful, print an error message.
-    print("Failed to retrieve tunings")
-
-# Initialize and get the list of input devices.
-get_input_devices()
+    # Check if the HTTP request was successful (status code 200 implies success).
+    if response.status_code == 200:
+        # Parse the JSON response from the server into a Python dictionary.
+        tunings = response.json()
+        # Print the dictionary containing the tunings to the console.
+        print(tunings)
 
 
-# GUI Section
-# -------------------------------------------------------------------
-# Create the main application window
-root = tk.Tk()
-root.title("Guitar Tuner")  # Set the title of the window
-root.geometry('420x420')  # Set the fixed size of the window
-root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the closing protocol to the on_closing function
+        # Initialize and get the list of input devices.
+        get_input_devices()
 
 
-# Configure the grid layout of the root window
-root.grid_columnconfigure(1, weight=1)
-root.grid_columnconfigure(2, weight=1)
+        # GUI Section
+        # -------------------------------------------------------------------
+        # Create the main application window
+        root = tk.Tk()
+        root.title("Guitar Tuner")  # Set the title of the window
+        root.geometry('420x420')  # Set the fixed size of the window
+        root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the closing protocol to the on_closing function
 
 
-# Create and place the tuning selection label and combobox
-tk.Label(root, text="Tuning:").grid(row=0, column=0, sticky="w", padx=10)
-tuning_var = tk.StringVar(root)
-tuning_combobox = ttk.Combobox(root, textvariable=tuning_var, values=list(tunings.keys()), state="readonly")
-tuning_combobox.grid(row=0, column=1, columnspan=2, sticky="ew", padx=[0,15], pady=5)
-tuning_combobox.current(0)  # Initialize with the first tuning option selected
-tuning_combobox.bind('<<ComboboxSelected>>', lambda event: update_string_buttons(tuning_var.get()))  # Update string buttons when a tuning is selected
-
-# Create and place the input device selection label and combobox
-tk.Label(root, text="Input device:").grid(row=1, column=0, sticky="w", padx=10)
-input_device_var = tk.StringVar(root)
-input_device_combobox = ttk.Combobox(root, textvariable=input_device_var, values=input_devices, state="readonly")
-input_device_combobox.grid(row=1, column=1, columnspan=2, sticky="ew", padx=[0,15], pady=5)
-input_device_combobox.current(0)  # Initialize with the first input device option selected
-
-# Create and place buttons for each string based on the selected tuning
-tk.Label(root, text="Choose string:").grid(row=2, column=0, sticky="w", padx=10)
-string_buttons = []
-for i, (note, freq) in enumerate(tunings[tuning_var.get()].items()):
-    button_text = f"{note} - {freq:.2f} Hz"
-    btn = tk.Button(root, text=button_text, padx=5, pady=5, command=lambda i=i, note=note, freq=freq: string_button_click(i, note, freq))
-    btn.grid(row=3 + i, column=1, sticky="ew", padx=[0,5])
-    string_buttons.append(btn)  # Add button to the list for later reference
-
-# Create and place label for displaying the targeted note
-tk.Label(root, text="Target note:").grid(row=9, column=0, sticky="w", padx=10)
-target_note_label = tk.Label(root, text=f"{target_frequency['note']} - {target_frequency['frequency']:.2f} Hz")
-target_note_label.grid(row=9, column=1, sticky="w")
-
-# Create and place label for displaying the detected input sound frequency
-tk.Label(root, text="Input sound:").grid(row=10, column=0, sticky="w", padx=10)
-input_sound_label = tk.Label(root, text=f"{input_frequency} Hz")
-input_sound_label.grid(row=10, column=1, sticky="w")
-
-# Tuning Indicator Label
-tuning_indicator_label = tk.Label(root, text="[     |     ]", font=("Courier", 12))
-tuning_indicator_label.grid(row=11, column=1, sticky="ew")
-
-# Create and place labels and buttons for starting and stopping frequency detection
-detect_freq_label = tk.Label(root, text=f"Start tuning:", padx=10)
-detect_freq_label.grid(row=12, column=0, sticky="w")
-detect_freq_button = tk.Button(root, text="Start", command=start_frequency_detection)  # Button to start detection
-detect_freq_button.grid(row=12, column=1, padx=10, pady=5, sticky="ew")
-stop_freq_button = tk.Button(root, text="Stop", command=stop_frequency_detection)  # Button to stop detection
-stop_freq_button.grid(row=12, column=2, padx=10, pady=5, sticky="ew")
-
-# Create and place a signature label
-signiture_label = tk.Label(root, text=f"by Kojc")
-signiture_label.grid(row=13, column=2, sticky="e", padx=[0,15])
+        # Configure the grid layout of the root window
+        root.grid_columnconfigure(1, weight=1)
+        root.grid_columnconfigure(2, weight=1)
 
 
-# Start the Tkinter main event loop
-root.mainloop()
+        # Create and place the tuning selection label and combobox
+        tk.Label(root, text="Tuning:").grid(row=0, column=0, sticky="w", padx=10)
+        tuning_var = tk.StringVar(root)
+        tuning_combobox = ttk.Combobox(root, textvariable=tuning_var, values=list(tunings.keys()), state="readonly")
+        tuning_combobox.grid(row=0, column=1, columnspan=2, sticky="ew", padx=[0,15], pady=5)
+        tuning_combobox.current(0)  # Initialize with the first tuning option selected
+        tuning_combobox.bind('<<ComboboxSelected>>', lambda event: update_string_buttons(tuning_var.get()))  # Update string buttons when a tuning is selected
+
+        # Create and place the input device selection label and combobox
+        tk.Label(root, text="Input device:").grid(row=1, column=0, sticky="w", padx=10)
+        input_device_var = tk.StringVar(root)
+        input_device_combobox = ttk.Combobox(root, textvariable=input_device_var, values=input_devices, state="readonly")
+        input_device_combobox.grid(row=1, column=1, columnspan=2, sticky="ew", padx=[0,15], pady=5)
+        input_device_combobox.current(0)  # Initialize with the first input device option selected
+
+        # Create and place buttons for each string based on the selected tuning
+        tk.Label(root, text="Choose string:").grid(row=2, column=0, sticky="w", padx=10)
+        string_buttons = []
+        for i, (note, freq) in enumerate(tunings[tuning_var.get()].items()):
+            button_text = f"{note} - {freq:.2f} Hz"
+            btn = tk.Button(root, text=button_text, padx=5, pady=5, command=lambda i=i, note=note, freq=freq: string_button_click(i, note, freq))
+            btn.grid(row=3 + i, column=1, sticky="ew", padx=[0,5])
+            string_buttons.append(btn)  # Add button to the list for later reference
+
+        # Create and place label for displaying the targeted note
+        tk.Label(root, text="Target note:").grid(row=9, column=0, sticky="w", padx=10)
+        target_note_label = tk.Label(root, text=f"{target_frequency['note']} - {target_frequency['frequency']:.2f} Hz")
+        target_note_label.grid(row=9, column=1, sticky="w")
+
+        # Create and place label for displaying the detected input sound frequency
+        tk.Label(root, text="Input sound:").grid(row=10, column=0, sticky="w", padx=10)
+        input_sound_label = tk.Label(root, text=f"{input_frequency} Hz")
+        input_sound_label.grid(row=10, column=1, sticky="w")
+
+        # Tuning Indicator Label
+        tuning_indicator_label = tk.Label(root, text="[     |     ]", font=("Courier", 12))
+        tuning_indicator_label.grid(row=11, column=1, sticky="ew")
+
+        # Create and place labels and buttons for starting and stopping frequency detection
+        detect_freq_label = tk.Label(root, text=f"Start tuning:", padx=10)
+        detect_freq_label.grid(row=12, column=0, sticky="w")
+        detect_freq_button = tk.Button(root, text="Start", command=start_frequency_detection)  # Button to start detection
+        detect_freq_button.grid(row=12, column=1, padx=10, pady=5, sticky="ew")
+        stop_freq_button = tk.Button(root, text="Stop", command=stop_frequency_detection)  # Button to stop detection
+        stop_freq_button.grid(row=12, column=2, padx=10, pady=5, sticky="ew")
+
+        # Create and place a signature label
+        signiture_label = tk.Label(root, text=f"by Kojc")
+        signiture_label.grid(row=13, column=2, sticky="e", padx=[0,15])
+
+
+        # Start the Tkinter main event loop
+        root.mainloop()
+
+    else:
+        # If the request was not successful, print an error message.
+        print("ERROR! - Server response status code:", response.status_code)
+
+except requests.exceptions.RequestException as e:
+    # Handle any exceptions that occur during the request
+    print("\nERROR! - Failed to connect to server\nDetails:")
+    print(e)
