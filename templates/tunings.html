@@ -10,23 +10,24 @@
     <!-- Add Tuning Button -->
     <button onclick="window.location.href='{{ url_for('add_tuning') }}'" id="add-tuning-button" class="app_button">Add Tuning</button>
 
-    <!-- Display tunings -->
-    <ul>
+    <!-- Tunings Container -->
+    <div id="tunings-container">
         <!-- Iterating over tunings -->
         {% for tuning_dict in tunings %}
             {% for tuning_name, notes in tuning_dict.items() %}
-            <li class="tuning-name">{{ tuning_name }}:
-                <ul class="notes-list">
-                    <!-- Iterating over notes -->
-                    {% for note_dict in notes %}
-                        {% for note, frequency in note_dict.items() %}
-                        <li class="note-frequency">{{ note }} - {{ frequency }} Hz</li>
+                <div class="tuning-block">
+                    <h2 class="tuning-name">{{ tuning_name }}</h2>
+                    <ul class="notes-list">
+                        <!-- Iterating over notes -->
+                        {% for note_dict in notes %}
+                            {% for note, frequency in note_dict.items() %}
+                                <li class="note-frequency">{{ note }} - {{ frequency }} Hz</li>
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                </ul>
-            </li>
+                    </ul>
+                </div>
             {% endfor %}
         {% endfor %}
-    </ul>
+    </div>
 </body>
 </html>

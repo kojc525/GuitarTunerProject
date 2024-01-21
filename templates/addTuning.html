@@ -9,6 +9,14 @@
             // JavaScript to handle saving the tuning
             // This will need to be implemented based on how you want to handle the data
         }
+
+        function updateFrequencyValue(rangeInput, numberInputId) {
+            document.getElementsByName(numberInputId)[0].value = parseFloat(rangeInput.value).toFixed(2);
+        }
+
+        function updateRangeValue(numberInput, rangeInputId) {
+            document.getElementsByName(rangeInputId)[0].value = numberInput.value;
+        }
     </script>
 </head>
 <body>
@@ -16,52 +24,57 @@
 
     <!-- Add new tuning inputs -->
     <div id="add_tuning_inputs">
-        <label for="tuningName">Tuning Name:</label>
-        <input type="text" id="tuningName" name="tuningName" required>
-
+        <div id="tuning_name_container">
+            <label for="tuningName">Tuning Name:</label>
+            <input type="text" id="tuningName" name="tuningName" required>
+        </div>
         <!-- Input fields for each string -->
         <div class="string-input" id="string1">
             <label>String 1 = Note:</label>
-            <input type="text" name="note1" required>
+            <input class="note-input" type="text" name="note1" required>
             <label> - Frequency:</label>
-            <input type="range" name="frequency1" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output> Hz
+            <input type="range" name="frequency1" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue1')">
+            <input type="number" name="frequencyValue1" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency1')" class="frequency-input"> Hz
         </div>
+
         <div class="string-input" id="string2">
             <label>String 2 = Note:</label>
-            <input type="text" name="note2" required>
+            <input class="note-input" type="text" name="note2" required>
             <label> - Frequency:</label>
-            <input type="range" name="frequency2" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output> Hz
+            <input type="range" name="frequency2" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue2')">
+            <input type="number" name="frequencyValue2" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency2')" class="frequency-input"> Hz
         </div>
+
         <div class="string-input" id="string3">
             <label>String 3 = Note:</label>
-            <input type="text" name="note3" required>
+            <input class="note-input" type="text" name="note3" required>
             <label> - Frequency:</label>
-            <input type="range" name="frequency3" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output> Hz
+            <input type="range" name="frequency3" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue3')">
+            <input type="number" name="frequencyValue3" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency3')" class="frequency-input"> Hz
         </div>
-                <!-- Input fields for each string -->
+
         <div class="string-input" id="string4">
             <label>String 4 = Note:</label>
-            <input type="text" name="note1" required>
+            <input class="note-input" type="text" name="note4" required>
             <label> - Frequency:</label>
-            <input type="range" name="frequency4" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output> Hz
+            <input type="range" name="frequency4" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue4')">
+            <input type="number" name="frequencyValue4" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency4')" class="frequency-input"> Hz
         </div>
+
         <div class="string-input" id="string5">
             <label>String 5 = Note:</label>
-            <input type="text" name="note2" required>
+            <input class="note-input" type="text" name="note5" required>
             <label> - Frequency:</label>
-            <input type="range" name="frequency5" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output> Hz
+            <input type="range" name="frequency5" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue5')">
+            <input type="number" name="frequencyValue5" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency5')" class="frequency-input"> Hz
         </div>
+
         <div class="string-input" id="string6">
             <label>String 6 = Note:</label>
-            <input type="text" name="note3" required>
+            <input class="note-input" type="text" name="note6" required>
             <label> - Frequency:</label>
-            <input type="range" name="frequency7" min="1" max="400" oninput="this.nextElementSibling.value = this.value">
-            <output>0</output> Hz
+            <input type="range" name="frequency6" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue6')">
+            <input type="number" name="frequencyValue6" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency6')" class="frequency-input"> Hz
         </div>
     </div>
 

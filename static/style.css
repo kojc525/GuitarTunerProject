@@ -1,77 +1,117 @@
-/* style.css */
-
-/* Global body styles: sets font, removes default margin, and adds top padding */
+/* Global Styles */
+/* ------------------------------------------- */
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;              /* Removes default margin from the body */
-    padding-top: 20px;      /* Adds padding at the top for spacing */
+    font-family: 'Arial', sans-serif; /* Sets the default font for the entire webpage */
+    margin: 0; /* Removes default margin from the body */
+    padding-top: 20px; /* Adds padding at the top for spacing */
 }
 
-/* Styles for all h1 elements: sets color, alignment, font size, weight, and spacing */
 h1 {
-    color: #051199;         /* Sets the color of h1 text */
-    text-align: center;     /* Centers h1 text horizontally */
-    font-size: 40px;        /* Sets the font size */
-    font-weight: bold;      /* Makes the font bold */
-    margin: 0;              /* Removes default margin */
-    padding-bottom: 20px;   /* Adds padding below the h1 for spacing */
+    color: #051199; /* Sets the color of h1 text (titles) */
+    text-align: center; /* Centers h1 text horizontally */
+    font-size: 40px; /* Sets the font size for titles */
+    font-weight: bold; /* Makes the font bold */
+    margin: 0; /* Removes default margin from titles */
+    padding-bottom: 20px; /* Adds padding below the h1 for spacing */
 }
 
-/* Styles for unordered lists: removes bullet points and padding */
+/* Tuning Display Styles */
+/* ------------------------------------------- */
 ul {
-    list-style-type: none;  /* Removes bullet points from lists */
-    padding: 0;             /* Removes default padding */
+    list-style-type: none; /* Removes bullet points from lists */
+    padding: 0; /* Removes default padding from lists */
 }
 
-/* Styles for list items representing tuning names */
-li.tuning-name {
-    color: #051199;         /* Sets text color */
-    margin-top: 20px;       /* Adds spacing above each tuning name */
-    font-size: 20px;        /* Sets the font size */
-    font-weight: bold;      /* Makes the font bold */
+.tuning-name {
+    color: #051199; /* Sets text color to blue for tuning names */
+    margin-top: 20px; /* Adds spacing above each tuning name */
+    font-size: 20px; /* Sets the font size for tuning names */
+    font-weight: bold; /* Makes the font bold */
 }
 
-/* Styles for list items representing note frequencies */
 li.note-frequency {
-    color: black;           /* Sets text color to black */
-    font-size: 15px;        /* Sets the font size */
-    font-weight: normal;    /* Sets normal font weight */
+    color: black; /* Sets text color to black for note frequencies */
+    font-size: 15px; /* Sets the font size for note frequencies */
+    font-weight: normal; /* Normal font weight for readability */
 }
 
-/* Styles for inner unordered lists showing notes */
 ul.notes-list {
-    list-style-type: disc;  /* Adds bullet points back for inner lists */
-    padding-left: 20px;     /* Adds padding to align bullets properly */
+    list-style-type: disc; /* Adds bullet points back for inner lists */
+    padding-left: 20px; /* Adds padding to align bullets properly */
 }
 
-/* General button styling used across the app */
+#tunings-container {
+    display: flex; /* Enables flexible box layout */
+    flex-wrap: wrap; /* Allows items to wrap to next line */
+    justify-content: center; /* Centers items horizontally */
+    max-width: 1200px; /* Maximum width of the container */
+    margin: auto; /* Centers the container on the page */
+}
+
+.tuning-block {
+    flex: 0 0 30%; /* Each block takes up about 30% of the container width */
+    margin: 10px; /* Margin around each tuning block */
+    border: 1px solid black; /* Border for each tuning block */
+    padding: 10px; /* Padding inside each tuning block */
+    box-sizing: border-box; /* Ensures padding is included in width calculation */
+}
+
+/* Button Styles */
+/* ------------------------------------------- */
 .app_button {
-    background-color: #051199;  /* Sets button background color */
-    color: white;               /* Sets text color to white */
-    padding: 10px 20px;         /* Adds padding inside the button */
-    text-decoration: none;      /* Removes any text decoration */
-    display: inline-block;      /* Aligns buttons in a line */
-    cursor: pointer;            /* Changes cursor to pointer on hover */
-    margin: 10px;               /* Adds margin around each button */
+    background-color: #051199; /* Background color for buttons */
+    color: white; /* Text color for buttons */
+    padding: 10px 20px; /* Padding inside buttons */
+    text-decoration: none; /* Removes underline from buttons */
+    display: inline-block; /* Displays buttons inline */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    margin: 10px; /* Space around each button */
 }
 
-/* Button hover effect */
 .app_button:hover {
-    background-color: #0e58ad;  /* Changes background color on hover */
+    background-color: #0377fc; /* Background color on hover */
 }
 
-/* Styling specifically for the 'Add Tuning' button */
 #add-tuning-button {
-    display: block;         /* Makes the button block level for centering */
-    margin: 20px auto;      /* Centers the button horizontally */
+    display: block; /* Makes the button a block element */
+    margin: 20px auto; /* Centers the button horizontally */
 }
 
-/* Container for buttons: centers its content */
 #button-container {
-    text-align: center;     /* Aligns child elements to the center */
+    text-align: center; /* Centers the buttons within the container */
 }
 
-/* Container for tuning input fields: centers its content */
+/* Input Field Styles */
+/* ------------------------------------------- */
 #add_tuning_inputs {
-    text-align: center;     /* Aligns child elements to the center */
+    text-align: center; /* Centers the input fields */
+}
+
+.note-input {
+    width: 30px; /* Width of the note input fields */
+}
+
+.string-input {
+    margin-bottom: 10px; /* Space below each string input */
+}
+
+.string-input input[type="text"] {
+    margin-right: 5px; /* Space between the note input and frequency slider */
+}
+
+.string-input input[type="range"] {
+    vertical-align: middle; /* Aligns the slider vertically */
+    width: 300px; /* Width of the slider */
+    height: 10px; /* Height of the slider's track */
+}
+
+.string-input output {
+    display: inline-block; /* Displays the output inline with other elements */
+    width: 50px; /* Width of the output element */
+    text-align: center; /* Centers text within the output element */
+}
+
+#tuning_name_container {
+    margin-bottom: 20px; /* Space below the tuning name container */
+    margin-top: 10px; /* Space above the tuning name container */
 }
