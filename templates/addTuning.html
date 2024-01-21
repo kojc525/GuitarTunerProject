@@ -6,8 +6,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script>
         function saveTuning() {
-            // JavaScript to handle saving the tuning
-            // This will need to be implemented based on how you want to handle the data
+            var tuningData = {
+                tuningName: document.getElementById('tuningName').value,
+            };
+            for (var i = 1; i <= 6; i++) {
+                tuningData['note' + i] = document.getElementsByName('note' + i)[0].value;
+                tuningData['frequencyValue' + i] = document.getElementsByName('frequencyValue' + i)[0].value;
+            }
+
+            fetch('/save_tuning', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(tuningData).toString()
+            }).then(function(response) {
+                window.location.href = '/';
+            });
         }
 
         function updateFrequencyValue(rangeInput, numberInputId) {

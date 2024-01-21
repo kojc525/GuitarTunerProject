@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, request, redirect, url_for
 import csv
 import os
 
@@ -77,29 +77,65 @@ def export_tunings_to_csv():
 # ***************************
 # Flask web application setup and routes.
 # -------------------------------------------------------------------
+# Flask web application instance
 app = Flask(__name__)
 
+
+#Home route: Renders the main page of the web application, displaying the list of guitar tunings.
 @app.route('/')
 def home():
-    # Route to render an HTML page that lists the current tunings.
     return render_template('tunings.html', tunings=tunings)
 
+
+# Add Tuning route: Renders the page where users can add a new tuning.
 @app.route('/add_tuning')
 def add_tuning():
     return render_template('addTuning.html')
 
-@app.route('/api/tunings', methods=['GET'])
-def get_tunings():
-    # API route to return the current tunings in JSON format.
-    return jsonify(tunings)
 
-@app.route('/shutdown', methods=['POST'])
-def shutdown():
-    # Route to shut down the server and export current tunings to CSV before closing.
+# Save Tuning route: Handles the POST request to save a new tuning.
+# - Extracts tuning data from the form.
+# - Adds the new tuning to the global 'tunings' list.
+# - Saves the updated tunings list to the CSV file.
+# - Redirects the user back to the home page.
+@app.route('/save_tuning', methods=['POST'])
+def save_tuning():
+    tuning_name = request.form['tuningName']
+    notes = [{request.form[f'note{i}']: float(request.form[f'frequencyValue{i}'])} for i in range(1, 7)]
+    tunings.append({tuning_name: notes})
+
     export_tunings_to_csv()
 
+    return redirect(url_for('home'))
+
+
+# API Tunings route: Provides a JSON representation of the current guitar tunings.
+# This can be used for API access to the tuning data.
+@app.route('/api/tunings', methods=['GET'])
+def get_tunings():
+    return jsonify(tunings)
+
+
+# Shutdown route: Allows for a clean shutdown of the Flask application.
+# - Saves the current state of tunings to the CSV file before shutting down.
+@app.route('/shutdown', methods=['POST'])
+def shutdown():
+    export_tunings_to_csv()
+
+    # Flask-specific shutdown procedure
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func:
+        func()
+    return 'Server shutting down...'
+
+
+# -------------------------------------------------------------------
+
+
 if __name__ == '__main__':
-    # Load tunings from CSV or create new file with default tunings when the application starts.
+    # Initialization when the script is run.
+    # Load tunings from the CSV file or create a new file with default tunings.
     load_tunings_from_csv()
-    # Start the Flask application.
+
+    # Start the Flask application server.
     app.run(debug=True)
