@@ -3,6 +3,13 @@
     <meta charset="UTF-8">
     <title>Tunings</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function confirmDelete(tuningName) {
+            if (confirm('Are you sure you want to delete the tuning: ' + tuningName + '?')) {
+                window.location.href = '/delete_tuning/' + encodeURIComponent(tuningName);
+            }
+        }
+    </script>
 </head>
 <body>
     <h1>Guitar Tunings</h1>
@@ -25,6 +32,8 @@
                             {% endfor %}
                         {% endfor %}
                     </ul>
+                    <!-- Add Delete Button -->
+                    <button onclick="confirmDelete('{{ tuning_name }}')" class="app_button delete-button">Delete</button>
                 </div>
             {% endfor %}
         {% endfor %}

@@ -91,12 +91,12 @@
             <input type="range" name="frequency6" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue6')">
             <input type="number" name="frequencyValue6" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency6')" class="frequency-input"> Hz
         </div>
-    </div>
 
-    <!-- Buttons -->
-    <div id="button-container">
-        <button onclick="saveTuning()" class="app_button" id="save_tuning_button">Save</button>
-        <button onclick="window.location.href='{{ url_for('home') }}'" class="app_button" id="back_button">Back</button>
+        <!-- Buttons -->
+        <div id="button-container">
+            <button onclick="saveTuning()" class="app_button" id="save_tuning_button">Save</button>
+            <button onclick="window.location.href='{{ url_for('home') }}'" class="app_button" id="back_button">Back</button>
+        </div>
     </div>
 </body>
 </html>

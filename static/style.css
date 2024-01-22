@@ -4,12 +4,16 @@ body {
     font-family: 'Arial', sans-serif; /* Sets the default font for the entire webpage */
     margin: 0; /* Removes default margin from the body */
     padding-top: 20px; /* Adds padding at the top for spacing */
+
+    /* Set background image */
+    background: url('/static/bg1.jpg') no-repeat center center fixed;
+    background-size: cover; /* Cover the entire viewport */
 }
 
 h1 {
-    color: #051199; /* Sets the color of h1 text (titles) */
+    color: #05e1fa; /* Sets the color of h1 text (titles) */
     text-align: center; /* Centers h1 text horizontally */
-    font-size: 40px; /* Sets the font size for titles */
+    font-size: 60px; /* Sets the font size for titles */
     font-weight: bold; /* Makes the font bold */
     margin: 0; /* Removes default margin from titles */
     padding-bottom: 20px; /* Adds padding below the h1 for spacing */
@@ -23,14 +27,14 @@ ul {
 }
 
 .tuning-name {
-    color: #051199; /* Sets text color to blue for tuning names */
+    color: #05e1fa; /* Sets text color to blue for tuning names */
     margin-top: 20px; /* Adds spacing above each tuning name */
     font-size: 20px; /* Sets the font size for tuning names */
     font-weight: bold; /* Makes the font bold */
 }
 
 li.note-frequency {
-    color: black; /* Sets text color to black for note frequencies */
+    color: white; /* Sets text color to black for note frequencies */
     font-size: 15px; /* Sets the font size for note frequencies */
     font-weight: normal; /* Normal font weight for readability */
 }
@@ -54,22 +58,31 @@ ul.notes-list {
     border: 1px solid black; /* Border for each tuning block */
     padding: 10px; /* Padding inside each tuning block */
     box-sizing: border-box; /* Ensures padding is included in width calculation */
+    border-radius: 10px; /* Optional: rounded corners */
+
+    /* Frosted glass effect */
+    background: rgba(0, 0, 0, 0.5); /* White background with opacity */
+    backdrop-filter: blur(5px); /* Blur effect for the background */
 }
+
 
 /* Button Styles */
 /* ------------------------------------------- */
 .app_button {
-    background-color: #051199; /* Background color for buttons */
-    color: white; /* Text color for buttons */
+    background-color: #05e1fa; /* Background color for buttons */
+    color: black; /* Text color for buttons */
     padding: 10px 20px; /* Padding inside buttons */
     text-decoration: none; /* Removes underline from buttons */
     display: inline-block; /* Displays buttons inline */
     cursor: pointer; /* Changes cursor to pointer on hover */
     margin: 10px; /* Space around each button */
+    font-weight: bold; /* Bold text */
+    border: 1px solid black; /* White border with 2px thickness */
+    border-radius: 5px; /* Optional: rounded corners */
 }
 
 .app_button:hover {
-    background-color: #0377fc; /* Background color on hover */
+    background-color: #92f0fc; /* Background color on hover */
 }
 
 #add-tuning-button {
@@ -83,7 +96,16 @@ ul.notes-list {
 
 /* Input Field Styles */
 /* ------------------------------------------- */
+/* Styles for the Add Tuning Inputs Block */
 #add_tuning_inputs {
+    /* Applying frosted glass effect */
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    backdrop-filter: blur(5px); /* Blur effect for the frosted glass look */
+    padding: 10px; /* Padding inside the block */
+    border-radius: 10px; /* Rounded corners */
+    margin: auto; /* Centering the block */
+    width: 45%; /* Adjust the width as needed */
+    box-sizing: border-box; /* Ensures padding is included in width calculation */
     text-align: center; /* Centers the input fields */
 }
 
@@ -93,6 +115,8 @@ ul.notes-list {
 
 .string-input {
     margin-bottom: 10px; /* Space below each string input */
+    color: white;
+    font-weight: bold;
 }
 
 .string-input input[type="text"] {
@@ -114,4 +138,16 @@ ul.notes-list {
 #tuning_name_container {
     margin-bottom: 20px; /* Space below the tuning name container */
     margin-top: 10px; /* Space above the tuning name container */
+}
+
+/* Styles for the Input Fields Inside Add Tuning Inputs Block */
+.note-input, .frequency-input {
+    margin: 5px; /* Space around each input field */
+    border-radius: 5px; /* Rounded corners for input fields */
+}
+
+/* Styles for Labels Inside Add Tuning Inputs Block */
+#add_tuning_inputs label {
+    color: white; /* White text color for better visibility */
+    font-weight: bold;
 }

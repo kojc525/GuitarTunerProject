@@ -129,6 +129,23 @@ def shutdown():
     return 'Server shutting down...'
 
 
+# Delete Tuning route: Handles the request to delete a specific guitar tuning.
+# - This route receives the name of the tuning to be deleted as a URL parameter.
+# - It then updates the global 'tunings' list by removing the specified tuning.
+# - After removal, it saves the updated list of tunings to the CSV file.
+# - Finally, it redirects the user back to the home page where the updated list is displayed.
+@app.route('/delete_tuning/<tuning_name>')
+def delete_tuning(tuning_name):
+    global tunings
+    # Update the tunings list by filtering out the tuning that matches the given name.
+    tunings = [tuning for tuning in tunings if list(tuning.keys())[0] != tuning_name]
+
+    # Save the updated list of tunings to the CSV file.
+    export_tunings_to_csv()
+
+    # Redirect the user back to the home page.
+    return redirect(url_for('home'))
+
 # -------------------------------------------------------------------
 
 
