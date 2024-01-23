@@ -61,7 +61,7 @@ ul.notes-list {
     border-radius: 10px; /* Optional: rounded corners */
 
     /* Frosted glass effect */
-    background: rgba(0, 0, 0, 0.5); /* White background with opacity */
+    background: rgba(0, 0, 0, 0.4); /* White background with opacity */
     backdrop-filter: blur(5px); /* Blur effect for the background */
 }
 
@@ -99,12 +99,13 @@ ul.notes-list {
 /* Styles for the Add Tuning Inputs Block */
 #add_tuning_inputs {
     /* Applying frosted glass effect */
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    background: rgba(0, 0, 0, 0.4); /* Semi-transparent black background */
     backdrop-filter: blur(5px); /* Blur effect for the frosted glass look */
     padding: 10px; /* Padding inside the block */
     border-radius: 10px; /* Rounded corners */
     margin: auto; /* Centering the block */
-    width: 45%; /* Adjust the width as needed */
+    width: 80%;
+    max-width: 800px; /* Adjust the width as needed */
     box-sizing: border-box; /* Ensures padding is included in width calculation */
     text-align: center; /* Centers the input fields */
 }
