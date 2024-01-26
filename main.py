@@ -6,7 +6,7 @@ import numpy as np
 import threading
 import requests
 
-
+# TEST
 
 # ***************************
 # *    Global variables     *
