@@ -5,6 +5,7 @@ import sounddevice as sd
 import numpy as np
 import threading
 import requests
+from PIL import Image, ImageTk
 
 
 # ***************************
@@ -298,6 +299,25 @@ get_input_devices()
 root = tk.Tk()
 root.title("Guitar Tuner")  # Set the title of the window
 root.geometry('420x450')  # Set the fixed size of the window
+
+# Disable resizing of the window
+root.resizable(False, False)
+
+# Load the background image
+bg_image = Image.open('static/bg1.jpg')
+
+# Resize the image to 30% of its original size
+width, height = bg_image.size
+new_width = int(width * 0.12)
+new_height = int(height * 0.12)
+bg_image = bg_image.resize((new_width, new_height), Image.Resampling.LANCZOS)
+
+bg_photo = ImageTk.PhotoImage(bg_image)
+
+# Create a label with the background image
+bg_label = tk.Label(root, image=bg_photo)
+bg_label.place(relwidth=1, relheight=1)  # Place it to cover the entire window
+
 root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the closing protocol to the on_closing function
 
 # Configure the grid layout of the root window

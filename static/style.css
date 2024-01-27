@@ -174,7 +174,7 @@ ul.notes-list {
     backdrop-filter: blur(5px); /* Blur effect for the frosted glass look */
     padding: 20px; /* Padding inside the content block */
     border-radius: 10px; /* Rounded corners */
-    margin: auto; /* Centering the block */
+    margin: 19px auto; /* Centering the block */
     width: 80%; /* Width of the content block */
     max-width: 800px; /* Maximum width of the content block */
     box-sizing: border-box; /* Ensures padding is included in width calculation */
