@@ -21,7 +21,7 @@
                 },
                 body: new URLSearchParams(tuningData).toString()
             }).then(function(response) {
-                window.location.href = '/';
+                window.location.href = '/tunings';
             });
         }
 
@@ -35,8 +35,15 @@
     </script>
 </head>
 <body>
-    <h1>Add New Tuning</h1>
-
+    <!-- Top Menu -->
+    <div id="top-menu">
+        <h1>Add New Tuning</h1>
+        <div id="menu-buttons">
+            <button onclick="window.location.href='/'" class="app_button">About</button>
+            <button onclick="window.location.href='{{ url_for('tunings_site') }}'" class="app_button">Tunings</button>
+            <button onclick="window.location.href='{{ url_for('add_tuning_site') }}'" class="app_button">Add Tuning</button>
+        </div>
+    </div>
     <!-- Add new tuning inputs -->
     <div id="add_tuning_inputs">
         <div id="tuning_name_container">
@@ -47,7 +54,7 @@
         <div class="string-input" id="string1">
             <label>String 1 = Note:</label>
             <input class="note-input" type="text" name="note1" required>
-            <label> - Frequency:</label>
+            <label> -  Frequency:</label>
             <input type="range" name="frequency1" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue1')">
             <input type="number" name="frequencyValue1" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency1')" class="frequency-input"> Hz
         </div>
@@ -55,7 +62,7 @@
         <div class="string-input" id="string2">
             <label>String 2 = Note:</label>
             <input class="note-input" type="text" name="note2" required>
-            <label> - Frequency:</label>
+            <label> -  Frequency:</label>
             <input type="range" name="frequency2" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue2')">
             <input type="number" name="frequencyValue2" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency2')" class="frequency-input"> Hz
         </div>
@@ -63,7 +70,7 @@
         <div class="string-input" id="string3">
             <label>String 3 = Note:</label>
             <input class="note-input" type="text" name="note3" required>
-            <label> - Frequency:</label>
+            <label> -  Frequency:</label>
             <input type="range" name="frequency3" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue3')">
             <input type="number" name="frequencyValue3" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency3')" class="frequency-input"> Hz
         </div>
@@ -71,7 +78,7 @@
         <div class="string-input" id="string4">
             <label>String 4 = Note:</label>
             <input class="note-input" type="text" name="note4" required>
-            <label> - Frequency:</label>
+            <label> -  Frequency:</label>
             <input type="range" name="frequency4" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue4')">
             <input type="number" name="frequencyValue4" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency4')" class="frequency-input"> Hz
         </div>
@@ -79,7 +86,7 @@
         <div class="string-input" id="string5">
             <label>String 5 = Note:</label>
             <input class="note-input" type="text" name="note5" required>
-            <label> - Frequency:</label>
+            <label> -  Frequency:</label>
             <input type="range" name="frequency5" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue5')">
             <input type="number" name="frequencyValue5" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency5')" class="frequency-input"> Hz
         </div>
@@ -87,7 +94,7 @@
         <div class="string-input" id="string6">
             <label>String 6 = Note:</label>
             <input class="note-input" type="text" name="note6" required>
-            <label> - Frequency:</label>
+            <label> -  Frequency:</label>
             <input type="range" name="frequency6" min="1" max="400" step="0.01" value="100" oninput="updateFrequencyValue(this, 'frequencyValue6')">
             <input type="number" name="frequencyValue6" min="1" max="400" step="0.01" value="100" oninput="updateRangeValue(this, 'frequency6')" class="frequency-input"> Hz
         </div>
@@ -95,7 +102,7 @@
         <!-- Buttons -->
         <div id="button-container">
             <button onclick="saveTuning()" class="app_button" id="save_tuning_button">Save</button>
-            <button onclick="window.location.href='{{ url_for('home') }}'" class="app_button" id="back_button">Back</button>
+            <button onclick="window.location.href='{{ url_for('tunings_site') }}'" class="app_button" id="back_button">Back</button>
         </div>
     </div>
 </body>

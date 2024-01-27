@@ -16,7 +16,6 @@ h1 {
     font-size: 60px; /* Sets the font size for titles */
     font-weight: bold; /* Makes the font bold */
     margin: 0; /* Removes default margin from titles */
-    padding-bottom: 20px; /* Adds padding below the h1 for spacing */
 }
 
 /* Tuning Display Styles */
@@ -103,7 +102,7 @@ ul.notes-list {
     backdrop-filter: blur(5px); /* Blur effect for the frosted glass look */
     padding: 10px; /* Padding inside the block */
     border-radius: 10px; /* Rounded corners */
-    margin: auto; /* Centering the block */
+    margin: 19px auto; /* Centering the block */
     width: 80%;
     max-width: 800px; /* Adjust the width as needed */
     box-sizing: border-box; /* Ensures padding is included in width calculation */
@@ -151,4 +150,55 @@ ul.notes-list {
 #add_tuning_inputs label {
     color: white; /* White text color for better visibility */
     font-weight: bold;
+}
+
+
+/* Top Menu Styles */
+#top-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+    border-top: 1px solid #05e1fa;
+    border-bottom: 1px solid #05e1fa;
+    margin-bottom: 10px;
+}
+
+/* About-Content Styles */
+/* ------------------------------------------- */
+.about-content {
+    /* Applying frosted glass effect */
+    background: rgba(0, 0, 0, 0.4); /* Semi-transparent black background */
+    backdrop-filter: blur(5px); /* Blur effect for the frosted glass look */
+    padding: 20px; /* Padding inside the content block */
+    border-radius: 10px; /* Rounded corners */
+    margin: auto; /* Centering the block */
+    width: 80%; /* Width of the content block */
+    max-width: 800px; /* Maximum width of the content block */
+    box-sizing: border-box; /* Ensures padding is included in width calculation */
+    color: white; /* White text color for better readability */
+    font-size: 14px; /* Font size for the content text */
+}
+
+
+.about-content h2 {
+    color: #05e1fa; /* Sets the color of h2 text (sub-titles) */
+    margin-top: 0; /* Removes default margin from top */
+}
+
+.about-content strong {
+    color: #05e1fa; /* Sets the color of strong text */
+}
+
+#podpis img {
+  width: 200px;
+  mix-blend-mode:normal;
+  filter: grayscale(0) brightness(0) invert(1);
+}
+
+#podpis {
+  text-align: right;
+
 }

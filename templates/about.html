@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Top Menu -->
+    <div id="top-menu">
+        <h1>Guitar Tunings</h1>
+        <div id="menu-buttons">
+            <button onclick="window.location.href='/'" class="app_button">About</button>
+            <button onclick="window.location.href='{{ url_for('tunings_site') }}'" class="app_button">Tunings</button>
+            <button onclick="window.location.href='{{ url_for('add_tuning_site') }}'" class="app_button">Add Tuning</button>
+        </div>
+    </div>
+
+    <div class="about-content">
+        <h2>About</h2>
+        <p>
+            The <strong>Guitar Tunings</strong> site is a unique platform tailored for musicians, especially guitarists, who seek a personalized and accessible way to manage their guitar tunings. Created by <strong>Jani Kojc</strong> as a school project, this site stands as a testament to the combination of musical passion and technological innovation.
+        </p>
+        <p>
+            At its core, Guitar Tunings serves as a dynamic repository where users can craft and store custom guitar tunings. Each tuning accommodates six different frequencies, mirroring the standard six-string guitar setup. This feature enables musicians to experiment with and store a variety of tunings, ranging from the conventional to the experimental.
+        </p>
+        <p>
+            One of the standout features of this site is its integration with a guitar tuner app. This seamless connection allows the tunings saved on the site to be directly utilized within the app, ensuring that your unique tunings are always at hand during practice sessions or performances.
+        </p>
+        <p>
+            The backbone of Guitar Tunings is a robust server running on Flask, a lightweight yet powerful web framework. This choice of technology underlines the site's commitment to reliability and efficiency, offering a seamless user experience.
+        </p>
+        <p>
+            Apart from creating and storing tunings, the site also empowers users with the flexibility to manage their collections. Tunings can be easily deleted as needed, which also removes them from the associated app, ensuring your tuning list remains up-to-date and relevant to your current needs.
+        </p>
+        <p>
+            We envisioned this platform not just as a project but as a practical tool for musicians. Whether you're a beginner trying to find your sound or a seasoned guitarist exploring new sonic territories, Guitar Tunings is designed to be your companion in your musical journey.
+        </p>
+        <p>
+            We invite you to explore, create, and enjoy the world of guitar tunings with us!
+        </p>
+        <!-- Podpis -->
+        <div id="podpis">
+            <img src="static/podpis.png" alt="Podpis" />
+        </div>
+    </div>
+</body>
+</html>

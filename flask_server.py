@@ -10,12 +10,23 @@ import os
 # Tunings that load into 'tunings.csv' when it is first created
 # Each item in the list is a dictionary representing a tuning type and its corresponding notes with frequencies.
 first_load_tunings = [
-    {"Standard":            [{"E2": 82.41}, {"A2": 110.00}, {"D3": 146.83}, {"G3": 196.00}, {"B3": 246.94}, {"E4": 329.63}]},
-    {"Drop D":              [{"D2": 73.42}, {"A2": 110.00}, {"D3": 146.83}, {"G3": 196.00}, {"B3": 246.94}, {"E4": 329.63}]},
-    {"E Flat Tuning":       [{"Eb2": 77.78}, {"Ab2": 103.83}, {"Db3": 138.59}, {"Gb3": 184.99}, {"Bb3": 233.08}, {"Eb4": 311.13}]},
-    {"D Standard Tuning":   [{"D2": 73.42}, {"G2": 97.99}, {"C3": 130.81}, {"F3": 174.61}, {"A3": 220.00}, {"D4": 293.66}]},
-    {"Open G Tuning":       [{"D2": 73.42}, {"G2": 97.99}, {"D3": 146.83}, {"G3": 196.00}, {"B3": 246.94}, {"D4": 293.66}]},
-    {"Slash Tuning":        [{"Eb2": 77.78}, {"Ab2": 103.83}, {"Db3": 138.59}, {"Gb3": 184.99}, {"Bb3": 233.08}, {"Eb4": 311.13}]}
+    {"Standard":            [{"E2": 82.41}, {"A2": 110.00}, {"D3": 146.83},
+                             {"G3": 196.00}, {"B3": 246.94}, {"E4": 329.63}]},
+
+    {"Drop D":              [{"D2": 73.42}, {"A2": 110.00}, {"D3": 146.83},
+                             {"G3": 196.00}, {"B3": 246.94}, {"E4": 329.63}]},
+
+    {"E Flat Tuning":       [{"Eb2": 77.78}, {"Ab2": 103.83}, {"Db3": 138.59},
+                             {"Gb3": 184.99}, {"Bb3": 233.08}, {"Eb4": 311.13}]},
+
+    {"D Standard Tuning":   [{"D2": 73.42}, {"G2": 97.99}, {"C3": 130.81},
+                             {"F3": 174.61}, {"A3": 220.00}, {"D4": 293.66}]},
+
+    {"Open G Tuning":       [{"D2": 73.42}, {"G2": 97.99}, {"D3": 146.83},
+                             {"G3": 196.00}, {"B3": 246.94}, {"D4": 293.66}]},
+
+    {"Slash Tuning":        [{"Eb2": 77.78}, {"Ab2": 103.83}, {"Db3": 138.59},
+                             {"Gb3": 184.99}, {"Bb3": 233.08}, {"Eb4": 311.13}]}
 ]
 
 # A list to store the current tunings loaded into the server.
@@ -49,7 +60,8 @@ def load_tunings_from_csv():
         with open(file_path, 'r') as file:
             reader = csv.reader(file)
             for row in reader:
-                # Each row represents a tuning, with the first element being the tuning name and subsequent elements being notes and frequencies.
+                # Each row represents a tuning, with the first element being the tuning
+                # name and subsequent elements being notes and frequencies.
                 tuning_name = row[0]
                 notes = [{row[i]: float(row[i + 1])} for i in range(1, len(row), 2)]
                 tunings.append({tuning_name: notes})
@@ -81,15 +93,19 @@ def export_tunings_to_csv():
 app = Flask(__name__)
 
 
-#Home route: Renders the main page of the web application, displaying the list of guitar tunings.
+# Home route: Renders the main page of the web application, displaying the list of guitar tunings.
 @app.route('/')
-def home():
+def about_site():
+    return render_template('about.html')
+
+@app.route('/tunings')
+def tunings_site():
     return render_template('tunings.html', tunings=tunings)
 
 
 # Add Tuning route: Renders the page where users can add a new tuning.
 @app.route('/add_tuning')
-def add_tuning():
+def add_tuning_site():
     return render_template('addTuning.html')
 
 
@@ -106,7 +122,7 @@ def save_tuning():
 
     export_tunings_to_csv()
 
-    return redirect(url_for('home'))
+    return redirect(url_for('tunings_site'))
 
 
 # API Tunings route: Provides a JSON representation of the current guitar tunings.
@@ -144,7 +160,7 @@ def delete_tuning(tuning_name):
     export_tunings_to_csv()
 
     # Redirect the user back to the home page.
-    return redirect(url_for('home'))
+    return redirect(url_for('tunings_site'))
 
 # -------------------------------------------------------------------
 

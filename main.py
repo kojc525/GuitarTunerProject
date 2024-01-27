@@ -6,7 +6,6 @@ import numpy as np
 import threading
 import requests
 
-# TEST
 
 # ***************************
 # *    Global variables     *
@@ -63,7 +62,6 @@ continue_detection = False
 
 # Global Variable where the app gets the tunings
 tunings_list_source = None  # Default to 'Local'
-
 
 
 # ***************************
@@ -284,7 +282,6 @@ def on_closing():
             detection_thread.join()
     # Close the application window.
     root.destroy()
-
 
 
 # ***************************

@@ -12,10 +12,15 @@
     </script>
 </head>
 <body>
-    <h1>Guitar Tunings</h1>
-
-    <!-- Add Tuning Button -->
-    <button onclick="window.location.href='{{ url_for('add_tuning') }}'" id="add-tuning-button" class="app_button">Add Tuning</button>
+    <!-- Top Menu -->
+    <div id="top-menu">
+        <h1>Tunings List</h1>
+        <div id="menu-buttons">
+            <button onclick="window.location.href='/'" class="app_button">About</button>
+            <button onclick="window.location.href='{{ url_for('tunings_site') }}'" class="app_button">Tunings</button>
+            <button onclick="window.location.href='{{ url_for('add_tuning_site') }}'" class="app_button">Add Tuning</button>
+        </div>
+    </div>
 
     <!-- Tunings Container -->
     <div id="tunings-container">
