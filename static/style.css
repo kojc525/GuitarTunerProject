@@ -84,13 +84,13 @@ ul.notes-list {
     background-color: #92f0fc; /* Background color on hover */
 }
 
-#add-tuning-button {
-    display: block; /* Makes the button a block element */
-    margin: 20px auto; /* Centers the button horizontally */
-}
-
 #button-container {
     text-align: center; /* Centers the buttons within the container */
+}
+
+.delete-button img{
+    width: 17px;
+
 }
 
 /* Input Field Styles */

@@ -38,7 +38,9 @@
                         {% endfor %}
                     </ul>
                     <!-- Add Delete Button -->
-                    <button onclick="confirmDelete('{{ tuning_name }}')" class="app_button delete-button">Delete</button>
+                    <button onclick="confirmDelete('{{ tuning_name }}')" class="app_button delete-button">
+                        <img src="{{ url_for('static', filename='bin.png') }}" alt="Delete">
+                    </button>
                 </div>
             {% endfor %}
         {% endfor %}
