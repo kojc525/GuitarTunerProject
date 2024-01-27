@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+from tkinter import font
 import tkinter.messagebox as messagebox
 import sounddevice as sd
 import numpy as np
@@ -242,9 +243,9 @@ def start_frequency_detection():
                 else:
                     # For differences between 3 Hz and 50 Hz, display the indicator in black
                     if target_frequency['frequency'] > dominant_frequency:
-                        tuning_indicator_label.config(text="[  > |     ]", fg='black')
+                        tuning_indicator_label.config(text="[  > |     ]", fg='white')
                     else:
-                        tuning_indicator_label.config(text="[     | <  ]", fg='black')
+                        tuning_indicator_label.config(text="[     | <  ]", fg='white')
             else:
                 break  # Exit the loop if detection is stopped.
 
@@ -298,7 +299,7 @@ get_input_devices()
 # Create the main application window
 root = tk.Tk()
 root.title("Guitar Tuner")  # Set the title of the window
-root.geometry('420x450')  # Set the fixed size of the window
+root.geometry('420x480')  # Set the fixed size of the window
 
 # Disable resizing of the window
 root.resizable(False, False)
@@ -308,8 +309,8 @@ bg_image = Image.open('static/bg1.jpg')
 
 # Resize the image to 30% of its original size
 width, height = bg_image.size
-new_width = int(width * 0.12)
-new_height = int(height * 0.12)
+new_width = int(width * 0.13)
+new_height = int(height * 0.13)
 bg_image = bg_image.resize((new_width, new_height), Image.Resampling.LANCZOS)
 
 bg_photo = ImageTk.PhotoImage(bg_image)
@@ -324,11 +325,14 @@ root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the closing protocol to th
 root.grid_columnconfigure(1, weight=1)
 root.grid_columnconfigure(2, weight=1)
 
+# Create a custom font for the label
+custom_font = font.Font(family="Arial", size=10, weight="bold")
 
 # ----- TARGET NOTE TO HIT -----
 # Create and place label for displaying the targeted note
-tk.Label(root, text="Target note:").grid(row=10, column=0, sticky="w", padx=10)
-target_note_label = tk.Label(root, text=f"{target_frequency['note']} - {target_frequency['frequency']:.2f} Hz")
+tk.Label(root, text="Target note:", bg='black', fg='#05e1fa', font=custom_font).grid(row=10, column=0, sticky="w", padx=10)
+target_note_label = tk.Label(root, text=f"{target_frequency['note']} - {target_frequency['frequency']:.2f} Hz",
+                             bg='black', fg='white', font=custom_font)
 target_note_label.grid(row=10, column=1, sticky="w")
 
 
@@ -336,14 +340,17 @@ target_note_label.grid(row=10, column=1, sticky="w")
 # Initialize tunings_list_source variable
 tunings_list_source = tk.StringVar(value="Local")  # Default to 'Local'
 # Radio Buttons for Tuning Source
-tk.Label(root, text="Get tuning from:").grid(row=0, column=0, sticky="w", padx=10)
-tk.Radiobutton(root, text="Local", variable=tunings_list_source, value="Local", command=update_tunings).grid(row=0, column=1, sticky="w")
-tk.Radiobutton(root, text="Server", variable=tunings_list_source, value="Server", command=update_tunings).grid(row=0, column=2, sticky="w")
+tk.Label(root, text="Get tuning from:", bg='black', fg='#05e1fa', font=custom_font).grid(row=0, column=0,
+                                                                                         sticky="w", padx=10)
+tk.Radiobutton(root, text="Local", variable=tunings_list_source, value="Local", command=update_tunings, bg='black',
+               fg='white', font=custom_font, selectcolor='black').grid(row=0, column=1, sticky="w")
+tk.Radiobutton(root, text="Server", variable=tunings_list_source, value="Server", command=update_tunings, bg='black',
+               fg='white', font=custom_font, selectcolor='black').grid(row=0, column=2, sticky="w")
 
 # Tuning Selection Combobox
 # Set Local tunings as default
 tunings = local_tunings
-tk.Label(root, text="Tuning:").grid(row=1, column=0, sticky="w", padx=10)
+tk.Label(root, text="Tuning:", bg='black', fg='#05e1fa', font=custom_font).grid(row=1, column=0, sticky="w", padx=10)
 tuning_var = tk.StringVar(root)
 tuning_combobox = ttk.Combobox(root, textvariable=tuning_var, state="readonly")
 tuning_combobox.grid(row=1, column=1, columnspan=2, sticky="ew", padx=[0, 15], pady=5)
@@ -353,7 +360,7 @@ update_combobox()
 
 # ----- INPUT SELECTION -----
 # Create and place the input device selection label and combobox
-tk.Label(root, text="Input device:").grid(row=2, column=0, sticky="w", padx=10)
+tk.Label(root, text="Input device:", bg='black', fg='#05e1fa', font=custom_font).grid(row=2, column=0, sticky="w", padx=10)
 input_device_var = tk.StringVar(root)
 input_device_combobox = ttk.Combobox(root, textvariable=input_device_var, values=input_devices, state="readonly")
 input_device_combobox.grid(row=2, column=1, columnspan=2, sticky="ew", padx=[0,15], pady=5)
@@ -362,7 +369,7 @@ input_device_combobox.current(0)  # Initialize with the first input device optio
 
 # ----- GUITAR STRING BUTTONS -----
 # Create and place buttons for each string based on the selected tuning
-tk.Label(root, text="Choose string:").grid(row=3, column=0, sticky="w", padx=10)
+tk.Label(root, text="Choose string:", bg='black', fg='#05e1fa', font=custom_font).grid(row=3, column=0, sticky="w", padx=10)
 string_buttons = []
 # Since tunings is a list of dictionaries, we extract the first tuning's notes by default.
 # You may want to do this after a tuning is selected from the combobox instead.
@@ -375,26 +382,26 @@ for i, note_dict in enumerate(notes_list):
         button_text = f"{note} - {freq:.2f} Hz"
         btn = tk.Button(root, text=button_text, padx=5, pady=5,
                         command=lambda note=note, freq=freq: string_button_click(note, freq))
-        btn.grid(row=4 + i, column=1, sticky="ew", padx=[0, 5])
+        btn.grid(row=3 + i, column=1, sticky="ew", padx=[0, 5], pady=2)
         string_buttons.append(btn)
 
 
 # ----- DOMINANT INPUT FREQUENCY -----
 # Create and place label for displaying the detected input sound frequency
-tk.Label(root, text="Input sound:").grid(row=11, column=0, sticky="w", padx=10)
-input_sound_label = tk.Label(root, text=f"{input_frequency} Hz")
+tk.Label(root, text="Input sound:", bg='black', fg='#05e1fa', font=custom_font).grid(row=11, column=0, sticky="w", padx=10)
+input_sound_label = tk.Label(root, text=f"{input_frequency} Hz", bg='black', fg='white', font=custom_font)
 input_sound_label.grid(row=11, column=1, sticky="w")
 
 
 # ----- TUNING INDICATOR -----
 # Tuning Indicator Label
-tuning_indicator_label = tk.Label(root, text="[     |     ]", font=("Courier", 12))
+tuning_indicator_label = tk.Label(root, text="[     |     ]", font=("Courier", 12, "bold"), bg='black', fg='white')
 tuning_indicator_label.grid(row=12, column=1, sticky="ew")
 
 
 # ----- START / STOP TUNING -----
 # Create and place labels and buttons for starting and stopping frequency detection
-detect_freq_label = tk.Label(root, text=f"Start tuning:", padx=10)
+detect_freq_label = tk.Label(root, text=f"Start tuning:", padx=10, bg='black', fg='#05e1fa', font=custom_font)
 detect_freq_label.grid(row=13, column=0, sticky="w")
 detect_freq_button = tk.Button(root, text="Start", command=start_frequency_detection, width=40)  # Button to start detection
 detect_freq_button.grid(row=13, column=1, padx=10, pady=5, sticky="ew")
@@ -404,7 +411,7 @@ stop_freq_button.grid(row=13, column=2, padx=10, pady=5, sticky="ew")
 
 # ----- SIGNITURE -----
 # Create and place a signature label
-signiture_label = tk.Label(root, text=f"by Kojc")
+signiture_label = tk.Label(root, text=f"by Kojc", bg='black', fg='#05e1fa', font=custom_font)
 signiture_label.grid(row=14, column=2, sticky="e", padx=[0,15])
 
 
