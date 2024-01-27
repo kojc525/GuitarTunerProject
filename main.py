@@ -148,7 +148,7 @@ def string_button_click(note, freq):
     # We must find the button associated with the note
     for button in string_buttons:
         if button['text'].startswith(note):  # Check if the button's text starts with the note name
-            button.config(bg="green")
+            button.config(bg="#05e1fa")
         else:
             button.config(bg="SystemButtonFace")
 
@@ -299,25 +299,30 @@ get_input_devices()
 # Create the main application window
 root = tk.Tk()
 root.title("Guitar Tuner")  # Set the title of the window
-root.geometry('420x480')  # Set the fixed size of the window
+root.geometry('540x605')  # Set the fixed size of the window
+root.configure(bg='black')  # Set the background color of the root window
 
 # Disable resizing of the window
 root.resizable(False, False)
 
 # Load the background image
-bg_image = Image.open('static/bg1.jpg')
+bg_image = Image.open('static/bg2.jpg')
 
 # Resize the image to 30% of its original size
 width, height = bg_image.size
-new_width = int(width * 0.13)
-new_height = int(height * 0.13)
+new_width = int(width * 0.15)
+new_height = int(height * 0.15)
 bg_image = bg_image.resize((new_width, new_height), Image.Resampling.LANCZOS)
 
 bg_photo = ImageTk.PhotoImage(bg_image)
 
-# Create a label with the background image
-bg_label = tk.Label(root, image=bg_photo)
-bg_label.place(relwidth=1, relheight=1)  # Place it to cover the entire window
+# Create a frame for the image and place it in the fourth column
+image_frame = tk.Frame(root, highlightbackground='black', highlightthickness=0)
+image_frame.grid(row=0, column=3, rowspan=15, sticky='ns')
+
+# Place the image inside the frame
+bg_label = tk.Label(image_frame, image=bg_photo, borderwidth=0)
+bg_label.pack(expand=True, fill='both', padx=0, pady=0)
 
 root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the closing protocol to the on_closing function
 
@@ -382,7 +387,7 @@ for i, note_dict in enumerate(notes_list):
         button_text = f"{note} - {freq:.2f} Hz"
         btn = tk.Button(root, text=button_text, padx=5, pady=5,
                         command=lambda note=note, freq=freq: string_button_click(note, freq))
-        btn.grid(row=3 + i, column=1, sticky="ew", padx=[0, 5], pady=2)
+        btn.grid(row=4 + i, column=1, sticky="ew", padx=[0, 5])
         string_buttons.append(btn)
 
 
