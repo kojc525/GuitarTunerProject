@@ -1,11 +1,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tunings</title>
+    <title>Guitar Tunings</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <script>
+        // JavaScript function to confirm the deletion of a tuning
         function confirmDelete(tuningName) {
+            // Displays a confirmation dialog with the tuning name to be deleted
             if (confirm('Are you sure you want to delete the tuning: ' + tuningName + '?')) {
+                // If confirmed, redirects to the delete endpoint with the tuning name
                 window.location.href = '/delete_tuning/' + encodeURIComponent(tuningName);
             }
         }
@@ -24,21 +27,28 @@
 
     <!-- Tunings Container -->
     <div id="tunings-container">
-        <!-- Iterating over tunings -->
+        <!-- Server-side template iteration over each tuning dictionary -->
         {% for tuning_dict in tunings %}
             {% for tuning_name, notes in tuning_dict.items() %}
+                <!-- Block for individual tuning -->
                 <div class="tuning-block">
+                    <!-- Displaying the name of the tuning -->
                     <h2 class="tuning-name">{{ tuning_name }}</h2>
+
+                    <!-- List of notes for the tuning -->
                     <ul class="notes-list">
-                        <!-- Iterating over notes -->
+                        <!-- Iterating over each note in the tuning -->
                         {% for note_dict in notes %}
                             {% for note, frequency in note_dict.items() %}
+                                <!-- Displaying each note and its frequency -->
                                 <li class="note-frequency">{{ note }} - {{ frequency }} Hz</li>
                             {% endfor %}
                         {% endfor %}
                     </ul>
-                    <!-- Add Delete Button -->
+
+                    <!-- Delete button with an image that calls the confirmDelete function on click -->
                     <button onclick="confirmDelete('{{ tuning_name }}')" class="app_button delete-button">
+                        <!-- Image for the delete button, falls back to text if the image fails to load -->
                         <img src="{{ url_for('static', filename='bin.png') }}" alt="Delete">
                     </button>
                 </div>

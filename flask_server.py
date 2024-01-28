@@ -93,11 +93,13 @@ def export_tunings_to_csv():
 app = Flask(__name__)
 
 
-# Home route: Renders the main page of the web application, displaying the list of guitar tunings.
+# Home route: Renders the main page of the web application
 @app.route('/')
 def about_site():
     return render_template('about.html')
 
+
+# Tunings route: Renders the  page of the web application for displaying the list of guitar tunings.
 @app.route('/tunings')
 def tunings_site():
     return render_template('tunings.html', tunings=tunings)
@@ -162,9 +164,8 @@ def delete_tuning(tuning_name):
     # Redirect the user back to the home page.
     return redirect(url_for('tunings_site'))
 
+
 # -------------------------------------------------------------------
-
-
 if __name__ == '__main__':
     # Initialization when the script is run.
     # Load tunings from the CSV file or create a new file with default tunings.

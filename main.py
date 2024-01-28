@@ -22,7 +22,10 @@ local_tunings = [
 ]
 
 # Server URL link where the app gets tunings (API)
-server_link = 'http://localhost:5000/api/tunings'
+# Local
+local_server_link = 'http://localhost:5000/api/tunings'
+# Render
+render_server_link = 'https://myfirstapp-t5m7.onrender.com/api/tunings'
 
 # Duration for each audio capture cycle in seconds.
 # Lower = faster app but less precise
@@ -37,10 +40,10 @@ turn_indicator_red = 50   # Hz - Turns indicator red when input_frequency is thi
 # Other global variables - DO NOT MODIFY
 # -------------------------------------------------------------------
 # Server tunings - are loded in with the API
-server_tunings = {}
+server_tunings = []
 
 # Tunings currently used by the app
-tunings = {}
+tunings = []
 
 # List of string buttons
 string_buttons = []
@@ -72,11 +75,11 @@ tunings_list_source = None  # Default to 'Local'
 # Server Functions
 # -------------------------------------------------------------------
 # Function to Load Tunings from Server
-def load_server_tunings():
-    global server_tunings, tunings, server_link
+def load_server_tunings(url):
+    global server_tunings, tunings
     try:
         # Make an HTTP GET request to the specified URL which is the API endpoint for guitar tunings.
-        response = requests.get(server_link)
+        response = requests.get(url)
         if response.status_code == 200:
             print("-" * 22 + "\nConnected to server!\n" + "-" * 22)
             # Parse the JSON response from the server into a Python dictionary.
@@ -103,7 +106,6 @@ def load_server_tunings():
         # Set radio button back to Local
         tunings_list_source.set("Local")
         update_tunings()
-
 
 
 # GUI Functions
@@ -158,11 +160,14 @@ def string_button_click(note, freq):
 
 # Function to Update Tunings Based on Radio Button Selection
 def update_tunings():
-    global tunings
-    if tunings_list_source.get() == "Local":
+    global tunings, local_server_link, render_server_link
+    source = tunings_list_source.get()
+    if source == "Local":
         tunings = local_tunings
-    else:
-        load_server_tunings()
+    elif source == "Local Server":
+        load_server_tunings(local_server_link)
+    elif source == "Render Server":
+        load_server_tunings(render_server_link)
     update_combobox()
 
 
@@ -293,45 +298,41 @@ def on_closing():
 # Initialize and get the list of input devices.
 get_input_devices()
 
-
 # GUI Section
 # -------------------------------------------------------------------
 # Create the main application window
 root = tk.Tk()
-root.title("Guitar Tuner")  # Set the title of the window
-root.geometry('540x605')  # Set the fixed size of the window
-root.configure(bg='black')  # Set the background color of the root window
+root.title("Guitar Tuner")                  # Set the title of the window
+root.geometry('540x605')                    # Set the fixed size of the window
+root.configure(bg='black')                  # Set the background color of the root window
+root.resizable(False, False)    # Disable resizing of the window
+# Bind the closing protocol to the on_closing function
+root.protocol("WM_DELETE_WINDOW", on_closing)
+# Configure the grid layout of the root window
+root.grid_columnconfigure(1, weight=1)
+root.grid_columnconfigure(2, weight=1)
 
-# Disable resizing of the window
-root.resizable(False, False)
 
+# ----- CUSTOM FONT FOR ALL LABELS -----
+custom_font = font.Font(family="Arial", size=10, weight="bold")
+
+
+# ----- BG IMAGE -----
 # Load the background image
 bg_image = Image.open('static/bg2.jpg')
-
 # Resize the image to 30% of its original size
 width, height = bg_image.size
 new_width = int(width * 0.15)
 new_height = int(height * 0.15)
 bg_image = bg_image.resize((new_width, new_height), Image.Resampling.LANCZOS)
-
 bg_photo = ImageTk.PhotoImage(bg_image)
-
 # Create a frame for the image and place it in the fourth column
 image_frame = tk.Frame(root, highlightbackground='black', highlightthickness=0)
 image_frame.grid(row=0, column=3, rowspan=15, sticky='ns')
-
 # Place the image inside the frame
 bg_label = tk.Label(image_frame, image=bg_photo, borderwidth=0)
 bg_label.pack(expand=True, fill='both', padx=0, pady=0)
 
-root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the closing protocol to the on_closing function
-
-# Configure the grid layout of the root window
-root.grid_columnconfigure(1, weight=1)
-root.grid_columnconfigure(2, weight=1)
-
-# Create a custom font for the label
-custom_font = font.Font(family="Arial", size=10, weight="bold")
 
 # ----- TARGET NOTE TO HIT -----
 # Create and place label for displaying the targeted note
@@ -347,10 +348,14 @@ tunings_list_source = tk.StringVar(value="Local")  # Default to 'Local'
 # Radio Buttons for Tuning Source
 tk.Label(root, text="Get tuning from:", bg='black', fg='#05e1fa', font=custom_font).grid(row=0, column=0,
                                                                                          sticky="w", padx=10)
-tk.Radiobutton(root, text="Local", variable=tunings_list_source, value="Local", command=update_tunings, bg='black',
-               fg='white', font=custom_font, selectcolor='black').grid(row=0, column=1, sticky="w")
-tk.Radiobutton(root, text="Server", variable=tunings_list_source, value="Server", command=update_tunings, bg='black',
-               fg='white', font=custom_font, selectcolor='black').grid(row=0, column=2, sticky="w")
+# Radio Buttons for Tuning Source
+tk.Radiobutton(root, text="Local App", variable=tunings_list_source, value="Local",
+               command=update_tunings, bg='black', fg='white', selectcolor='black').grid(row=0, column=1, sticky="w")
+tk.Radiobutton(root, text="Local Server", variable=tunings_list_source, value="Local Server",
+               command=update_tunings, bg='black', fg='white', selectcolor='black').grid(row=0, column=2, sticky="w")
+tk.Radiobutton(root, text="Render Server", variable=tunings_list_source, value="Render Server",
+               command=update_tunings, bg='black', fg='white', selectcolor='black').grid(row=0, column=3, sticky="w")
+
 
 # Tuning Selection Combobox
 # Set Local tunings as default
@@ -417,7 +422,7 @@ stop_freq_button.grid(row=13, column=2, padx=10, pady=5, sticky="ew")
 # ----- SIGNITURE -----
 # Create and place a signature label
 signiture_label = tk.Label(root, text=f"by Kojc", bg='black', fg='#05e1fa', font=custom_font)
-signiture_label.grid(row=14, column=2, sticky="e", padx=[0,15])
+signiture_label.grid(row=14, column=3, sticky="e", padx=[0,15])
 
 
 # Start the Tkinter main event loop
