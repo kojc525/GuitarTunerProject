@@ -1,4 +1,4 @@
-import tkinter as tk
+﻿import tkinter as tk
 from tkinter import ttk
 from tkinter import font
 import tkinter.messagebox as messagebox
@@ -221,12 +221,14 @@ def calculate_dominant_frequency(recording, samplerate=44100):
 def start_frequency_detection():
     def detect():
         global continue_detection
+
         # Continuously detect frequency while the flag is true.
         while continue_detection:
             # Retrieve and set the selected input device.
             selected_device_str = input_device_var.get()
             device_index = int(selected_device_str.split('[')[-1].rstrip(']'))
             sd.default.device = device_index
+
             # Record audio and calculate its dominant frequency.
             recording = record_audio(duration=detection_speed)
             dominant_frequency = calculate_dominant_frequency(recording)
@@ -237,6 +239,7 @@ def start_frequency_detection():
                 # Compare input frequency with target frequency and update the indicator
                 frequency_difference = abs(target_frequency['frequency'] - dominant_frequency)
                 # Check if the dominant frequency is within [turn_indicator_green] Hz of the target frequency
+
                 if frequency_difference < turn_indicator_green:
                     tuning_indicator_label.config(text="[  >> | << ]", fg='green')
                 elif frequency_difference > turn_indicator_red:
@@ -259,6 +262,7 @@ def start_frequency_detection():
     detect_freq_button.config(bg='green', activebackground='green')  # Start button green
     stop_freq_button.config(bg='SystemButtonFace', activebackground='SystemButtonFace')  # Stop button default
     continue_detection = True
+    
     # Start the detection thread.
     detection_thread = threading.Thread(target=detect)
     detection_thread.start()
